@@ -23,10 +23,33 @@ jobs:
         with:
           name: tsconfig-references
           path: packages/tsconfig-references/bundles
+      - run: echo ${{ github.ref }}
   release:
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
+    needs: build
     steps:
       - uses: actions/download-artifact@v1
         with:
           name: tsconfig-references
+      - uses: montudor/action-zip@v0.1.0
+        with:
+          args:
+            unzip -qq tsconfig-references -d ./tsconfig-references
+      - uses: actions/create-release@v1
+        id: create_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+      - uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./tsconfig-references/@yarnpkg/plugin-tsconfig-references.js
+          asset_name: plugin-tsconfig-references.js
+          asset_content_type: application/javascript
