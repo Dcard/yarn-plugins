@@ -23,7 +23,6 @@ jobs:
         with:
           name: tsconfig-references
           path: packages/tsconfig-references/bundles
-      - run: echo ${{ github.ref }}
   release:
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
@@ -32,10 +31,6 @@ jobs:
       - uses: actions/download-artifact@v1
         with:
           name: tsconfig-references
-      - uses: montudor/action-zip@v0.1.0
-        with:
-          args:
-            unzip -qq tsconfig-references -d ./tsconfig-references
       - uses: actions/create-release@v1
         id: create_release
         env:
