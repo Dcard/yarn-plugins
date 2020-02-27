@@ -40,6 +40,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         [null, {
           "packageLocation": "./",
           "packageDependencies": [
+            ["@yarnpkg/pnpify", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:2.0.0-rc.18"],
+            ["typescript", "patch:typescript@npm%3A3.8.2#builtin<compat/typescript>::version=3.8.2&hash=273569"]
           ],
           "linkType": "SOFT",
         }]
@@ -747,7 +749,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@babel/plugin-syntax-decorators", "virtual:14617dc7ea820712d15e0e2ae8578ff2d1962ac3c2ebff23e48e5b2619670517a99a7ecd0994004421edb24de16a10244b9a0aa3d4f8abdd3995b2da05e4744c#npm:7.8.3"],
             ["@yarnpkg/core", "npm:2.0.0-rc.23"],
             ["@yarnpkg/fslib", "npm:2.0.0-rc.16"],
-            ["@yarnpkg/pnpify", "virtual:14617dc7ea820712d15e0e2ae8578ff2d1962ac3c2ebff23e48e5b2619670517a99a7ecd0994004421edb24de16a10244b9a0aa3d4f8abdd3995b2da05e4744c#npm:2.0.0-rc.18"],
+            ["@yarnpkg/pnpify", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:2.0.0-rc.18"],
             ["babel-loader", "virtual:14617dc7ea820712d15e0e2ae8578ff2d1962ac3c2ebff23e48e5b2619670517a99a7ecd0994004421edb24de16a10244b9a0aa3d4f8abdd3995b2da05e4744c#npm:8.0.6"],
             ["babel-plugin-lazy-import", "virtual:14617dc7ea820712d15e0e2ae8578ff2d1962ac3c2ebff23e48e5b2619670517a99a7ecd0994004421edb24de16a10244b9a0aa3d4f8abdd3995b2da05e4744c#arcanis/babel-plugin-lazy-import#commit:ff060e230afb4f2f36a1c495be65271c14ae2e4b"],
             ["chalk", "npm:3.0.0"],
@@ -1289,10 +1291,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "HARD",
         }],
-        ["virtual:14617dc7ea820712d15e0e2ae8578ff2d1962ac3c2ebff23e48e5b2619670517a99a7ecd0994004421edb24de16a10244b9a0aa3d4f8abdd3995b2da05e4744c#npm:2.0.0-rc.18", {
-          "packageLocation": "./.yarn/$$virtual/@yarnpkg-pnpify-virtual-d40fba273a/0/cache/@yarnpkg-pnpify-npm-2.0.0-rc.18-8a1e7222b5-2.zip/node_modules/@yarnpkg/pnpify/",
+        ["virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:2.0.0-rc.18", {
+          "packageLocation": "./.yarn/$$virtual/@yarnpkg-pnpify-virtual-236f7997d1/0/cache/@yarnpkg-pnpify-npm-2.0.0-rc.18-8a1e7222b5-2.zip/node_modules/@yarnpkg/pnpify/",
           "packageDependencies": [
-            ["@yarnpkg/pnpify", "virtual:14617dc7ea820712d15e0e2ae8578ff2d1962ac3c2ebff23e48e5b2619670517a99a7ecd0994004421edb24de16a10244b9a0aa3d4f8abdd3995b2da05e4744c#npm:2.0.0-rc.18"],
+            ["@yarnpkg/pnpify", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:2.0.0-rc.18"],
             ["@yarnpkg/fslib", "npm:2.0.0-rc.16"],
             ["chalk", "npm:3.0.0"],
             ["comment-json", "npm:2.4.2"],
@@ -6160,7 +6162,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         ["workspace:.", {
           "packageLocation": "./",
           "packageDependencies": [
-            ["root-workspace-0b6124", "workspace:."]
+            ["root-workspace-0b6124", "workspace:."],
+            ["@yarnpkg/pnpify", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:2.0.0-rc.18"],
+            ["typescript", "patch:typescript@npm%3A3.8.2#builtin<compat/typescript>::version=3.8.2&hash=273569"]
           ],
           "linkType": "SOFT",
         }]

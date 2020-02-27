@@ -2,5 +2,11 @@
   "private": true,
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "@yarnpkg/pnpify": "^2.0.0-rc.18"
+  },
+  "devDependencies": {
+    "typescript": "^3.8.2"
+  }
 }
