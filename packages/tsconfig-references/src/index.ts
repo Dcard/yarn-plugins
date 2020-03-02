@@ -3,6 +3,11 @@ import { Hooks, suggestUtils } from '@yarnpkg/plugin-essentials';
 import { ppath, toFilename, xfs, PortablePath } from '@yarnpkg/fslib';
 import detectIndent from 'detect-indent';
 
+const BASE_TSCONFIG = {
+  references: [],
+  indent: '  ',
+};
+
 function getTsConfigPath(workspace: Workspace) {
   return ppath.join(workspace.cwd, toFilename('tsconfig.json'));
 }
@@ -22,15 +27,13 @@ async function readTsConfig(workspace: Workspace): Promise<TsConfig> {
   const exist = await xfs.existsPromise(path);
 
   if (!exist) {
-    return {
-      references: [],
-      indent: '  ',
-    };
+    return BASE_TSCONFIG;
   }
 
   const content = await xfs.readFilePromise(path, 'utf8');
 
   return {
+    ...BASE_TSCONFIG,
     ...JSON.parse(content),
     indent: detectIndent(content).indent,
   };
