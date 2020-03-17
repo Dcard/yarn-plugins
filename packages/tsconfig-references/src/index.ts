@@ -3,10 +3,7 @@ import { Hooks, suggestUtils } from '@yarnpkg/plugin-essentials';
 import { ppath, toFilename, xfs, PortablePath } from '@yarnpkg/fslib';
 import detectIndent from 'detect-indent';
 
-const BASE_TSCONFIG = {
-  references: [],
-  indent: '  ',
-};
+const WORKSPACE_PROTOCOL = 'workspace:';
 
 function getTsConfigPath(workspace: Workspace): PortablePath {
   return ppath.join(workspace.cwd, toFilename('tsconfig.json'));
@@ -18,22 +15,20 @@ interface TsReference {
 
 interface TsConfig {
   indent: string;
-  references: TsReference[];
+  references?: TsReference[];
   [key: string]: unknown;
 }
 
-async function readTsConfig(workspace: Workspace): Promise<TsConfig> {
+async function readTsConfig(
+  workspace: Workspace,
+): Promise<TsConfig | undefined> {
   const path = getTsConfigPath(workspace);
   const exist = await xfs.existsPromise(path);
-
-  if (!exist) {
-    return BASE_TSCONFIG;
-  }
+  if (!exist) return;
 
   const content = await xfs.readFilePromise(path, 'utf8');
 
   return {
-    ...BASE_TSCONFIG,
     ...JSON.parse(content),
     indent: detectIndent(content).indent,
   };
@@ -48,7 +43,7 @@ async function writeTsConfig(
 }
 
 function isLocalPackage(descriptor: Descriptor): boolean {
-  return descriptor.range.startsWith('workspace:');
+  return descriptor.range.startsWith(WORKSPACE_PROTOCOL);
 }
 
 function uniqTsReference(references: TsReference[]): TsReference[] {
@@ -68,7 +63,7 @@ function getReferencePath(
   const src = workspace.cwd;
   const dest = ppath.join(
     workspace.project.cwd,
-    descriptor.range.substring(10) as PortablePath,
+    descriptor.range.substring(WORKSPACE_PROTOCOL.length) as PortablePath,
   );
 
   return ppath.relative(src, dest);
@@ -84,11 +79,12 @@ async function afterWorkspaceDependencyAddition(
   }
 
   const tsConfig = await readTsConfig(workspace);
+  if (!tsConfig) return;
 
   await writeTsConfig(workspace, {
     ...tsConfig,
     references: uniqTsReference([
-      ...tsConfig.references,
+      ...(tsConfig.references || []),
       { path: getReferencePath(workspace, descriptor) },
     ]),
   });
@@ -104,13 +100,18 @@ async function afterWorkspaceDependencyRemoval(
   }
 
   const tsConfig = await readTsConfig(workspace);
+  if (!tsConfig) return;
+
   const refPath = getReferencePath(workspace, descriptor);
 
   await writeTsConfig(workspace, {
     ...tsConfig,
-    references: uniqTsReference(
-      tsConfig.references.filter(ref => ref.path !== refPath),
-    ),
+    ...(tsConfig.references &&
+      tsConfig.references.length && {
+        references: uniqTsReference(
+          tsConfig.references.filter(ref => ref.path !== refPath),
+        ),
+      }),
   });
 }
 
