@@ -2,7 +2,7 @@
 import 'jest-extended';
 import TestProject from '../../utils/TestProject';
 import TestWorkspace from '../../utils/TestWorkspace';
-import { outputJSON, readJSON } from 'fs-extra';
+import { outputJSON, readJSON, pathExists, remove } from 'fs-extra';
 import { join } from 'path';
 
 let project: TestProject;
@@ -34,6 +34,20 @@ async function writeTsConfig(ws: TestWorkspace, data: unknown): Promise<void> {
   await outputJSON(getTsConfigPath(ws), data);
 }
 
+async function deleteTsConfig(ws: TestWorkspace): Promise<void> {
+  await remove(getTsConfigPath(ws));
+}
+
+async function setupTsConfig(data: unknown): Promise<void> {
+  beforeAll(async () => {
+    await writeTsConfig(workspaces[0], data);
+  });
+
+  afterAll(async () => {
+    await deleteTsConfig(workspaces[0]);
+  });
+}
+
 function testTsConfig({ references, ...options }: Record<string, any>): void {
   it('check tsconfig.json', async () => {
     const actual = await readTsConfig(workspaces[0]);
@@ -47,21 +61,25 @@ function testTsConfig({ references, ...options }: Record<string, any>): void {
   });
 }
 
-describe('when tsconfig.json exists', () => {
-  describe('add workspace', () => {
-    beforeEach(async () => {
-      await workspaces[0].yarn(['add', workspaces[1].name]);
-    });
+describe('add workspace', () => {
+  beforeEach(async () => {
+    await workspaces[0].yarn(['add', workspaces[1].name]);
+  });
 
-    afterEach(async () => {
-      await workspaces[0].yarn(['remove', workspaces[1].name]);
-    });
+  afterEach(async () => {
+    await workspaces[0].yarn(['remove', workspaces[1].name]);
+  });
 
+  describe('when tsconfig.json does not exist', () => {
+    it('should not create tsconfig.json', async () => {
+      expect(await pathExists(getTsConfigPath(workspaces[0]))).toBeFalse();
+    });
+  });
+
+  describe('when tsconfig.json exist', () => {
     describe('references does not exist', () => {
-      beforeAll(async () => {
-        await writeTsConfig(workspaces[0], {
-          compilerOptions: {},
-        });
+      setupTsConfig({
+        compilerOptions: {},
       });
 
       testTsConfig({
@@ -72,10 +90,8 @@ describe('when tsconfig.json exists', () => {
 
     describe('references exist', () => {
       describe('references contain the workspace', () => {
-        beforeAll(async () => {
-          await writeTsConfig(workspaces[0], {
-            references: [{ path: '../test-b' }, { path: '../test-c' }],
-          });
+        setupTsConfig({
+          references: [{ path: '../test-b' }, { path: '../test-c' }],
         });
 
         testTsConfig({
@@ -84,10 +100,8 @@ describe('when tsconfig.json exists', () => {
       });
 
       describe('references does not contain the workspace', () => {
-        beforeAll(async () => {
-          await writeTsConfig(workspaces[0], {
-            references: [{ path: '../test-c' }],
-          });
+        setupTsConfig({
+          references: [{ path: '../test-c' }],
         });
 
         testTsConfig({
@@ -96,18 +110,58 @@ describe('when tsconfig.json exists', () => {
       });
     });
   });
-
-  describe('remove workspace', () => {
-    //
-  });
 });
 
-describe('when tsconfig.json does not exist', () => {
-  describe('add workspace', () => {
-    //
+describe('remove workspace', () => {
+  beforeAll(async () => {
+    await workspaces[0].yarn(['add', workspaces[1].name]);
   });
 
-  describe('remove workspace', () => {
-    //
+  beforeEach(async () => {
+    await workspaces[0].yarn(['remove', workspaces[1].name]);
+  });
+
+  afterEach(async () => {
+    await workspaces[0].yarn(['add', workspaces[1].name]);
+  });
+
+  describe('when tsconfig.json does not exist', () => {
+    it('should not create tsconfig.json', async () => {
+      expect(await pathExists(getTsConfigPath(workspaces[0]))).toBeFalse();
+    });
+  });
+
+  describe('when tsconfig.json exist', () => {
+    describe('references does not exist', () => {
+      setupTsConfig({
+        compilerOptions: {},
+      });
+
+      testTsConfig({
+        compilerOptions: {},
+      });
+    });
+
+    describe('references exist', () => {
+      describe('references contain the workspace', () => {
+        setupTsConfig({
+          references: [{ path: '../test-b' }, { path: '../test-c' }],
+        });
+
+        testTsConfig({
+          references: [{ path: '../test-c' }],
+        });
+      });
+
+      describe('references does not contain the workspace', () => {
+        setupTsConfig({
+          references: [{ path: '../test-c' }],
+        });
+
+        testTsConfig({
+          references: [{ path: '../test-c' }],
+        });
+      });
+    });
   });
 });
