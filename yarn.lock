@@ -6341,11 +6341,11 @@ typescript@^3.8.2:
 
 "typescript@patch:typescript@^3.8.2#builtin<compat/typescript>":
   version: 3.8.2
-  resolution: "typescript@patch:typescript@npm%3A3.8.2#builtin<compat/typescript>::version=3.8.2&hash=273569"
+  resolution: "typescript@patch:typescript@npm%3A3.8.2#builtin<compat/typescript>::version=3.8.2&hash=270b6c"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 2/712782c4372bd95cf0f9c1f9e7bc72637ab417722952889503107dd4e64169d537ad01d227cf6d513460a8a0fe328e52cbf22a2dab9966004c6ae0bca6743ba5
+  checksum: 2/a3081d21f6a118b7ab8189b8bcc448a68d2ab0266720c3fd6bdb821b035751c942ac1cb72db40987aebb9936d69c4c3443f536bcb83e1264f1aa211232ced0ff
   languageName: node
   linkType: hard
 

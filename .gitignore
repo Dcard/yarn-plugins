@@ -2,3 +2,4 @@
 /.yarn/build-state.yml
 /.yarn/cache
 bundles/
+/.yarn/install-state.gz
