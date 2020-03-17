@@ -8,7 +8,7 @@ const BASE_TSCONFIG = {
   indent: '  ',
 };
 
-function getTsConfigPath(workspace: Workspace) {
+function getTsConfigPath(workspace: Workspace): PortablePath {
   return ppath.join(workspace.cwd, toFilename('tsconfig.json'));
 }
 
@@ -19,7 +19,7 @@ interface TsReference {
 interface TsConfig {
   indent: string;
   references: TsReference[];
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 async function readTsConfig(workspace: Workspace): Promise<TsConfig> {
@@ -39,16 +39,19 @@ async function readTsConfig(workspace: Workspace): Promise<TsConfig> {
   };
 }
 
-async function writeTsConfig(workspace: Workspace, { indent, ...tsConfig }: TsConfig) {
+async function writeTsConfig(
+  workspace: Workspace,
+  { indent, ...tsConfig }: TsConfig,
+): Promise<void> {
   const path = getTsConfigPath(workspace);
   await xfs.writeFilePromise(path, JSON.stringify(tsConfig, null, indent));
 }
 
-function isLocalPackage(descriptor: Descriptor) {
+function isLocalPackage(descriptor: Descriptor): boolean {
   return descriptor.range.startsWith('workspace:');
 }
 
-function uniqTsReference(references: TsReference[]) {
+function uniqTsReference(references: TsReference[]): TsReference[] {
   const obj: Record<string, TsReference> = {};
 
   for (const ref of references) {
@@ -58,9 +61,15 @@ function uniqTsReference(references: TsReference[]) {
   return Object.values(obj);
 }
 
-function getReferencePath(workspace: Workspace, descriptor: Descriptor) {
+function getReferencePath(
+  workspace: Workspace,
+  descriptor: Descriptor,
+): PortablePath {
   const src = workspace.cwd;
-  const dest = ppath.join(workspace.project.cwd, descriptor.range.substring(10) as PortablePath);
+  const dest = ppath.join(
+    workspace.project.cwd,
+    descriptor.range.substring(10) as PortablePath,
+  );
 
   return ppath.relative(src, dest);
 }
@@ -69,7 +78,7 @@ async function afterWorkspaceDependencyAddition(
   workspace: Workspace,
   target: suggestUtils.Target,
   descriptor: Descriptor,
-) {
+): Promise<void> {
   if (!isLocalPackage(descriptor)) {
     return;
   }
@@ -89,7 +98,7 @@ async function afterWorkspaceDependencyRemoval(
   workspace: Workspace,
   target: suggestUtils.Target,
   descriptor: Descriptor,
-) {
+): Promise<void> {
   if (!isLocalPackage(descriptor)) {
     return;
   }
@@ -99,7 +108,9 @@ async function afterWorkspaceDependencyRemoval(
 
   await writeTsConfig(workspace, {
     ...tsConfig,
-    references: uniqTsReference(tsConfig.references.filter(ref => ref.path !== refPath)),
+    references: uniqTsReference(
+      tsConfig.references.filter(ref => ref.path !== refPath),
+    ),
   });
 }
 

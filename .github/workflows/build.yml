@@ -18,6 +18,7 @@ jobs:
             ${{ runner.os }}-yarn-
       - run: yarn install --immutable
       - run: yarn constraints
+      - run: yarn lint
       - run: yarn workspaces foreach --verbose --topological-dev --parallel --interlaced run build
       - uses: actions/upload-artifact@v1
         with:

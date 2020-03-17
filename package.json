@@ -3,10 +3,35 @@
   "workspaces": [
     "packages/*"
   ],
+  "scripts": {
+    "lint": "eslint . --ext .js,.ts"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,ts}": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
   "dependencies": {
     "@yarnpkg/pnpify": "^2.0.0-rc.18"
   },
   "devDependencies": {
+    "@types/eslint": "6.1.8",
+    "@types/eslint-plugin-prettier": "2.2.0",
+    "@types/prettier": "1.19.0",
+    "@typescript-eslint/eslint-plugin": "^2.24.0",
+    "@typescript-eslint/parser": "^2.24.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "husky": "^4.2.3",
+    "lint-staged": "^10.0.8",
+    "prettier": "^1.19.1",
     "typescript": "^3.8.2"
   }
 }
