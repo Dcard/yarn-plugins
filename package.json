@@ -4,7 +4,8 @@
     "packages/*"
   ],
   "scripts": {
-    "lint": "eslint . --ext .js,.ts"
+    "lint": "eslint . --ext .js,.ts",
+    "test": "jest --config integration/jest.config.js"
   },
   "husky": {
     "hooks": {
@@ -23,15 +24,30 @@
   "devDependencies": {
     "@types/eslint": "6.1.8",
     "@types/eslint-plugin-prettier": "2.2.0",
+    "@types/execa": "2.0.0",
+    "@types/fs-extra": "8.1.0",
+    "@types/globby": "9.1.0",
+    "@types/jest": "^25.1.4",
+    "@types/js-yaml": "3.12.2",
     "@types/prettier": "1.19.0",
     "@typescript-eslint/eslint-plugin": "^2.24.0",
     "@typescript-eslint/parser": "^2.24.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-jest": "^23.8.2",
     "eslint-plugin-prettier": "^3.1.2",
+    "execa": "^4.0.0",
+    "fs-extra": "^8.1.0",
+    "globby": "^11.0.0",
     "husky": "^4.2.3",
+    "jest": "^25.1.0",
+    "jest-extended": "^0.11.5",
+    "js-yaml": "^3.13.1",
     "lint-staged": "^10.0.8",
     "prettier": "^1.19.1",
+    "tmp-promise": "^2.0.2",
+    "ts-jest": "25.2.0",
+    "tslib": "^1.11.0",
     "typescript": "^3.8.2"
   }
 }

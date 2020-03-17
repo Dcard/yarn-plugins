@@ -20,6 +20,7 @@ jobs:
       - run: yarn constraints
       - run: yarn lint
       - run: yarn workspaces foreach --verbose --topological-dev --parallel --interlaced run build
+      - run: yarn test
       - uses: actions/upload-artifact@v1
         with:
           name: tsconfig-references
