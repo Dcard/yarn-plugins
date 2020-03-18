@@ -14,6 +14,19 @@ export default class ChangedListCommand extends FilterCommand {
 
   public static usage = Command.Usage({
     description: 'List changed workspaces and their dependents',
+    details: `
+      If the \`--json\` flag is set the output will follow a JSON-stream output also known as NDJSON (https://github.com/ndjson/ndjson-spec).
+    `,
+    examples: [
+      [
+        'Find changed files within a Git range',
+        'yarn changed list --git-range 93a9ed8..4ef2c61',
+      ],
+      [
+        'Include or exclude workspaces',
+        'yarn changed list --include @foo/a --exclude @foo/b',
+      ],
+    ],
   });
 
   @Command.Path('changed', 'list')

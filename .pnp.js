@@ -2675,7 +2675,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ]],
       ["babel-plugin-lazy-import", [
         ["virtual:00ba4dd670376963bd11e313a564b86ef2e05ca490ac4822584bab0536f8455d6db4aada3c5663cc94f8ac6e10b3a79bc19c1ba89fd2da27e281f8d7506be1ca#arcanis/babel-plugin-lazy-import#commit:ff060e230afb4f2f36a1c495be65271c14ae2e4b", {
-          "packageLocation": "./.yarn/$$virtual/babel-plugin-lazy-import-virtual-e409195246/0/cache/babel-plugin-lazy-import-https-62f6f9525b-2.zip/node_modules/babel-plugin-lazy-import/",
+          "packageLocation": "./.yarn/$$virtual/babel-plugin-lazy-import-virtual-e409195246/0/cache/babel-plugin-lazy-import-exotic-c0fbbe709f-2.zip/node_modules/babel-plugin-lazy-import/",
           "packageDependencies": [
             ["babel-plugin-lazy-import", "virtual:00ba4dd670376963bd11e313a564b86ef2e05ca490ac4822584bab0536f8455d6db4aada3c5663cc94f8ac6e10b3a79bc19c1ba89fd2da27e281f8d7506be1ca#arcanis/babel-plugin-lazy-import#commit:ff060e230afb4f2f36a1c495be65271c14ae2e4b"],
             ["@babel/core", "npm:7.8.4"],

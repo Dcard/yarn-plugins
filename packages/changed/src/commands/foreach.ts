@@ -24,6 +24,21 @@ export default class ChangedForeachCommand extends FilterCommand {
 
   public static usage = Command.Usage({
     description: 'Run a command on changed workspaces and their dependents',
+    details: `
+      This command will run a given sub-command on changed workspaces and workspaces depends on them.
+
+      Check the documentation for \`yarn workspace foreach\` for more details.
+    `,
+    examples: [
+      [
+        'Run build scripts on changed workspaces',
+        'yarn changed foreach run build',
+      ],
+      [
+        'Find changed files within a Git range',
+        'yarn changed foreach --git-range 93a9ed8..4ef2c61 run build',
+      ],
+    ],
   });
 
   @Command.Path('changed', 'foreach')
