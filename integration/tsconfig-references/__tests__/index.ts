@@ -77,35 +77,51 @@ describe('add workspace', () => {
   });
 
   describe('when tsconfig.json exist', () => {
-    describe('references does not exist', () => {
-      setupTsConfig({
-        compilerOptions: {},
-      });
+    describe('target workspace does not have tsconfig.json', () => {
+      setupTsConfig({});
 
-      testTsConfig({
-        compilerOptions: {},
-        references: [{ path: '../test-b' }],
-      });
+      testTsConfig({});
     });
 
-    describe('references exist', () => {
-      describe('references contain the workspace', () => {
+    describe('target workspace has tsconfig.json', () => {
+      beforeAll(async () => {
+        await writeTsConfig(workspaces[1], {});
+      });
+
+      afterAll(async () => {
+        await deleteTsConfig(workspaces[1]);
+      });
+
+      describe('references does not exist', () => {
         setupTsConfig({
-          references: [{ path: '../test-b' }, { path: '../test-c' }],
+          compilerOptions: {},
         });
 
         testTsConfig({
-          references: [{ path: '../test-b' }, { path: '../test-c' }],
+          compilerOptions: {},
+          references: [{ path: '../test-b' }],
         });
       });
 
-      describe('references does not contain the workspace', () => {
-        setupTsConfig({
-          references: [{ path: '../test-c' }],
+      describe('references exist', () => {
+        describe('references contain the workspace', () => {
+          setupTsConfig({
+            references: [{ path: '../test-b' }, { path: '../test-c' }],
+          });
+
+          testTsConfig({
+            references: [{ path: '../test-b' }, { path: '../test-c' }],
+          });
         });
 
-        testTsConfig({
-          references: [{ path: '../test-b' }, { path: '../test-c' }],
+        describe('references does not contain the workspace', () => {
+          setupTsConfig({
+            references: [{ path: '../test-c' }],
+          });
+
+          testTsConfig({
+            references: [{ path: '../test-b' }, { path: '../test-c' }],
+          });
         });
       });
     });
@@ -163,5 +179,23 @@ describe('remove workspace', () => {
         });
       });
     });
+  });
+});
+
+describe('add npm package', () => {
+  const packageName = 'isobject';
+
+  beforeEach(async () => {
+    await workspaces[0].yarn(['add', packageName]);
+  });
+
+  afterEach(async () => {
+    await workspaces[0].yarn(['remove', packageName]);
+  });
+
+  describe('when tsconfig.json exist', () => {
+    setupTsConfig({});
+
+    testTsConfig({});
   });
 });
