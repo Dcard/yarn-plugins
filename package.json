@@ -17,6 +17,10 @@
       "eslint --fix"
     ]
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Dcard/yarn-plugins.git"
+  },
   "dependencies": {
     "@yarnpkg/pnpify": "^2.0.0-rc.18"
   },

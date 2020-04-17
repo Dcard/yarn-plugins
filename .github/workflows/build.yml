@@ -22,6 +22,5 @@ jobs:
       - run: yarn workspaces foreach --verbose --topological-dev --parallel --interlaced run build
       - run: yarn test
       - run: yarn semantic-release
-        if: github.ref == 'refs/head/master'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
