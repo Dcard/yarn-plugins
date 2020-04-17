@@ -144,10 +144,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:25.2.0"
       ],
       [
-        "tslib",
-        "npm:1.11.0"
-      ],
-      [
         "typescript",
         "patch:typescript@npm%3A3.8.2#builtin<compat/typescript>::version=3.8.2&hash=270b6c"
       ]
@@ -185,7 +181,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prettier", "npm:1.19.1"],
             ["tmp-promise", "npm:2.0.2"],
             ["ts-jest", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:25.2.0"],
-            ["tslib", "npm:1.11.0"],
             ["typescript", "patch:typescript@npm%3A3.8.2#builtin<compat/typescript>::version=3.8.2&hash=270b6c"]
           ],
           "linkType": "SOFT",
@@ -534,7 +529,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@yarnpkg/plugin-essentials", "virtual:4f645adc7fdb3b5e6935be2a360f2cce4be3a92a3637260c8aeb5cda50d28968db5f7165d5741bb999dad92e5a88b99d34922edb66058c6f4be272a2ac85b85c#npm:2.0.0-rc.23"],
             ["@yarnpkg/shell", "npm:2.0.0-rc.10"],
             ["clipanion", "npm:2.2.2"],
-            ["tslib", "npm:1.11.0"],
             ["typescript", "patch:typescript@npm%3A3.8.2#builtin<compat/typescript>::version=3.8.2&hash=270b6c"]
           ],
           "linkType": "SOFT",
@@ -552,7 +546,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@yarnpkg/fslib", "npm:2.0.0-rc.16"],
             ["@yarnpkg/plugin-essentials", "virtual:4f645adc7fdb3b5e6935be2a360f2cce4be3a92a3637260c8aeb5cda50d28968db5f7165d5741bb999dad92e5a88b99d34922edb66058c6f4be272a2ac85b85c#npm:2.0.0-rc.23"],
             ["detect-indent", "npm:6.0.0"],
-            ["tslib", "npm:1.11.0"],
             ["typescript", "patch:typescript@npm%3A3.8.2#builtin<compat/typescript>::version=3.8.2&hash=270b6c"]
           ],
           "linkType": "SOFT",
@@ -9314,7 +9307,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prettier", "npm:1.19.1"],
             ["tmp-promise", "npm:2.0.2"],
             ["ts-jest", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:25.2.0"],
-            ["tslib", "npm:1.11.0"],
             ["typescript", "patch:typescript@npm%3A3.8.2#builtin<compat/typescript>::version=3.8.2&hash=270b6c"]
           ],
           "linkType": "SOFT",

@@ -6,8 +6,7 @@
     "build": "builder build plugin"
   },
   "dependencies": {
-    "clipanion": "^2.1.5",
-    "tslib": "^1.11.0"
+    "clipanion": "^2.1.5"
   },
   "devDependencies": {
     "@yarnpkg/builder": "^2.0.0-rc.19",

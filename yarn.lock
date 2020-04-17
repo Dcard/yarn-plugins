@@ -312,7 +312,6 @@ __metadata:
     "@yarnpkg/plugin-essentials": ^2.0.0-rc.23
     "@yarnpkg/shell": ^2.0.0-rc.10
     clipanion: ^2.1.5
-    tslib: ^1.11.0
     typescript: ^3.8.2
   languageName: unknown
   linkType: soft
@@ -328,7 +327,6 @@ __metadata:
     "@yarnpkg/fslib": ^2.0.0-rc.16
     "@yarnpkg/plugin-essentials": ^2.0.0-rc.23
     detect-indent: ^6.0.0
-    tslib: ^1.11.0
     typescript: ^3.8.2
   languageName: unknown
   linkType: soft
@@ -8190,7 +8188,6 @@ resolve@1.9.0:
     prettier: ^1.19.1
     tmp-promise: ^2.0.2
     ts-jest: 25.2.0
-    tslib: ^1.11.0
     typescript: ^3.8.2
   languageName: unknown
   linkType: soft
@@ -9358,7 +9355,7 @@ resolve@1.9.0:
   languageName: node
   linkType: hard
 
-"tslib@npm:^1.11.0, tslib@npm:^1.8.1, tslib@npm:^1.9.0":
+"tslib@npm:^1.8.1, tslib@npm:^1.9.0":
   version: 1.11.0
   resolution: "tslib@npm:1.11.0"
   checksum: 2/fa014c310808080e07b14d33aa52a3c8c8038f25fd7164a8e7d038fd6f2ca767b5a9305c77147d7d59ccd93bdf7a461a3c1d7ae53dfaca43501a2623834def97
