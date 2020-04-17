@@ -1,6 +1,5 @@
-import { Workspace } from '@yarnpkg/core';
+import { Workspace, structUtils } from '@yarnpkg/core';
 import getWorkspaceDependencies from './getWorkspaceDependencies';
-import { structUtils } from '@yarnpkg/core';
 
 export default function getWorkspaceDependents(
   workspace: Workspace,

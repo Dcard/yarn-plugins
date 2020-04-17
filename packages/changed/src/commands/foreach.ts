@@ -1,6 +1,11 @@
 import { FilterCommand } from './filter';
 import { Command } from 'clipanion';
-import { Configuration, Project, structUtils } from '@yarnpkg/core';
+import {
+  Configuration,
+  Project,
+  structUtils,
+  StreamReport,
+} from '@yarnpkg/core';
 import { WorkspaceRequiredError } from '@yarnpkg/cli';
 
 export default class ChangedForeachCommand extends FilterCommand {
@@ -57,6 +62,20 @@ export default class ChangedForeachCommand extends FilterCommand {
     }
 
     const workspaces = await this.listWorkspaces(project);
+
+    if (!workspaces.length) {
+      const report = await StreamReport.start(
+        {
+          configuration,
+          stdout: this.context.stdout,
+        },
+        async report => {
+          report.reportInfo(null, 'No workspaces changed');
+        },
+      );
+
+      return report.exitCode();
+    }
 
     return this.cli.run(
       [
