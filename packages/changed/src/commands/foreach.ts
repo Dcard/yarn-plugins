@@ -69,7 +69,7 @@ export default class ChangedForeachCommand extends FilterCommand {
           configuration,
           stdout: this.context.stdout,
         },
-        async report => {
+        async (report) => {
           report.reportInfo(null, 'No workspaces changed');
         },
       );

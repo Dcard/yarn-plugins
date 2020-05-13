@@ -8,7 +8,7 @@ export default function listChangedWorkspaces(
   const workspaces = new Set<Workspace>();
 
   for (const ws of project.workspaces) {
-    const changed = files.some(path => path.startsWith(ws.relativeCwd));
+    const changed = files.some((path) => path.startsWith(ws.relativeCwd));
 
     if (changed && !workspaces.has(ws)) {
       workspaces.add(ws);

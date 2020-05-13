@@ -7,7 +7,7 @@ export default function getWorkspaceDependents(
   const dependents = new Set<Workspace>();
 
   for (const ws of workspace.project.workspaces) {
-    const isDep = getWorkspaceDependencies(ws).some(dep =>
+    const isDep = getWorkspaceDependencies(ws).some((dep) =>
       structUtils.areLocatorsEqual(dep.locator, workspace.locator),
     );
 

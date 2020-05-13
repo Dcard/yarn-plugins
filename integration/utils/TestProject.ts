@@ -15,7 +15,7 @@ export default class TestProject {
     const pluginBundles = await globby('packages/*/bundles/**/*.js', {
       cwd: PROJECT_DIR,
     });
-    const plugins = pluginBundles.map(src => ({
+    const plugins = pluginBundles.map((src) => ({
       src,
       name: '@yarnpkg/' + basename(src, extname(src)),
       dest: posix.join('.yarn', 'plugins', ...src.split(sep).slice(3)),
@@ -30,7 +30,7 @@ export default class TestProject {
       join(dir.path, '.yarnrc.yml'),
       safeDump({
         yarnPath: join(PROJECT_DIR, '.yarn', 'releases', 'yarn-rc.js'),
-        plugins: plugins.map(plugin => ({
+        plugins: plugins.map((plugin) => ({
           path: plugin.dest,
           spec: plugin.name,
         })),

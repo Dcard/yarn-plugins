@@ -27,7 +27,7 @@ export abstract class FilterCommand extends BaseCommand {
     const files = stdout.split(/\r?\n/);
     const workspaces = listChangedWorkspaces(project, files);
 
-    return workspaces.filter(ws => {
+    return workspaces.filter((ws) => {
       const name = structUtils.stringifyIdent(ws.locator);
 
       if (name) {

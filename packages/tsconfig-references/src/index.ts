@@ -106,7 +106,7 @@ async function afterWorkspaceDependencyRemoval(
     ...(tsConfig.references &&
       tsConfig.references.length && {
         references: uniqTsReference(
-          tsConfig.references.filter(ref => ref.path !== refPath),
+          tsConfig.references.filter((ref) => ref.path !== refPath),
         ),
       }),
   });

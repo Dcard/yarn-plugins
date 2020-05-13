@@ -50,7 +50,7 @@ export default class ChangedListCommand extends FilterCommand {
         json: this.json,
         stdout: this.context.stdout,
       },
-      async report => {
+      async (report) => {
         const workspaces = await this.listWorkspaces(project);
 
         for (const ws of workspaces) {
