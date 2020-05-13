@@ -1,7 +1,7 @@
 import tmp from 'tmp-promise';
-import { emptyDir, copy, outputFile, outputJSON } from 'fs-extra';
+import { emptyDir, copy, outputFile, outputJSON, readFile } from 'fs-extra';
 import { join, sep, posix, basename, extname } from 'path';
-import { safeDump } from 'js-yaml';
+import { safeDump, safeLoad } from 'js-yaml';
 import globby from 'globby';
 import execa from 'execa';
 
@@ -25,11 +25,15 @@ export default class TestProject {
       await copy(join(PROJECT_DIR, path.src), join(dir.path, path.dest));
     }
 
+    const yarnConfig = safeLoad(
+      await readFile(join(PROJECT_DIR, '.yarnrc.yml'), 'utf8'),
+    );
+
     // Create .yarnrc.yml
     await outputFile(
       join(dir.path, '.yarnrc.yml'),
       safeDump({
-        yarnPath: join(PROJECT_DIR, '.yarn', 'releases', 'yarn-rc.js'),
+        yarnPath: join(PROJECT_DIR, yarnConfig.yarnPath),
         plugins: plugins.map((plugin) => ({
           path: plugin.dest,
           spec: plugin.name,
