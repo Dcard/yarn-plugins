@@ -1,6 +1,4 @@
-import { Workspace } from '@yarnpkg/core';
-
-const DEPENDENCY_TYPES = ['devDependencies', 'dependencies'];
+import { Workspace, Manifest } from '@yarnpkg/core';
 
 export default function getWorkspaceDependencies(
   workspace: Workspace,
@@ -9,8 +7,8 @@ export default function getWorkspaceDependencies(
   const dependencies = new Set<Workspace>();
 
   function addDependency({ manifest }: Workspace): void {
-    for (const depType of DEPENDENCY_TYPES) {
-      for (const [, descriptor] of manifest.getForScope(depType)) {
+    for (const depType of Manifest.hardDependencies) {
+      for (const descriptor of manifest.getForScope(depType).values()) {
         const dep = project.tryWorkspaceByDescriptor(descriptor);
 
         if (dep && !dependencies.has(dep)) {
