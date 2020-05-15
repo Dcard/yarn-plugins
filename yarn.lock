@@ -393,6 +393,20 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@dcard/yarn-plugin-docker-build@workspace:packages/docker-build":
+  version: 0.0.0-use.local
+  resolution: "@dcard/yarn-plugin-docker-build@workspace:packages/docker-build"
+  dependencies:
+    "@yarnpkg/builder": ^2.0.0-rc.21
+    "@yarnpkg/cli": ^2.0.0-rc.33
+    "@yarnpkg/core": ^2.0.0-rc.27
+    "@yarnpkg/fslib": ^2.0.0-rc.20
+    "@yarnpkg/plugin-pack": ^2.0.0-rc.19
+    clipanion: ^2.1.5
+    typescript: ^3.9.2
+  languageName: unknown
+  linkType: soft
+
 "@dcard/yarn-plugin-tsconfig-references@workspace:packages/tsconfig-references":
   version: 0.0.0-use.local
   resolution: "@dcard/yarn-plugin-tsconfig-references@workspace:packages/tsconfig-references"

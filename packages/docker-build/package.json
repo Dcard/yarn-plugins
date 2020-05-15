@@ -1,0 +1,19 @@
+{
+  "name": "@dcard/yarn-plugin-docker-build",
+  "version": "0.0.1",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "builder build plugin"
+  },
+  "dependencies": {
+    "clipanion": "^2.1.5"
+  },
+  "devDependencies": {
+    "@yarnpkg/builder": "^2.0.0-rc.21",
+    "@yarnpkg/cli": "^2.0.0-rc.33",
+    "@yarnpkg/core": "^2.0.0-rc.27",
+    "@yarnpkg/fslib": "^2.0.0-rc.20",
+    "@yarnpkg/plugin-pack": "^2.0.0-rc.19",
+    "typescript": "^3.9.2"
+  }
+}

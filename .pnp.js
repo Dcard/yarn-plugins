@@ -27,6 +27,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:packages/changed"
       },
       {
+        "name": "@dcard/yarn-plugin-docker-build",
+        "reference": "workspace:packages/docker-build"
+      },
+      {
         "name": "@dcard/yarn-plugin-tsconfig-references",
         "reference": "workspace:packages/tsconfig-references"
       }
@@ -35,6 +39,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
     "ignorePatternData": "(^(?:\\.vscode\\/pnpify(?:\\/(?!\\.)(?:(?:(?!(?:^|\\/)\\.).)*?)|$))$)",
     "fallbackExclusionList": [
       ["@dcard/yarn-plugin-changed", ["workspace:packages/changed"]],
+      ["@dcard/yarn-plugin-docker-build", ["workspace:packages/docker-build"]],
       ["@dcard/yarn-plugin-tsconfig-references", ["workspace:packages/tsconfig-references"]],
       ["root-workspace-0b6124", ["workspace:."]]
     ],
@@ -636,6 +641,22 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@yarnpkg/fslib", "npm:2.0.0-rc.20"],
             ["@yarnpkg/plugin-essentials", "virtual:4f645adc7fdb3b5e6935be2a360f2cce4be3a92a3637260c8aeb5cda50d28968db5f7165d5741bb999dad92e5a88b99d34922edb66058c6f4be272a2ac85b85c#npm:2.0.0-rc.27"],
             ["@yarnpkg/shell", "npm:2.0.0-rc.11"],
+            ["clipanion", "npm:2.2.2"],
+            ["typescript", "patch:typescript@npm%3A3.9.2#builtin<compat/typescript>::version=3.9.2&hash=8cac75"]
+          ],
+          "linkType": "SOFT",
+        }]
+      ]],
+      ["@dcard/yarn-plugin-docker-build", [
+        ["workspace:packages/docker-build", {
+          "packageLocation": "./packages/docker-build/",
+          "packageDependencies": [
+            ["@dcard/yarn-plugin-docker-build", "workspace:packages/docker-build"],
+            ["@yarnpkg/builder", "virtual:4f645adc7fdb3b5e6935be2a360f2cce4be3a92a3637260c8aeb5cda50d28968db5f7165d5741bb999dad92e5a88b99d34922edb66058c6f4be272a2ac85b85c#npm:2.0.0-rc.21"],
+            ["@yarnpkg/cli", "virtual:4f645adc7fdb3b5e6935be2a360f2cce4be3a92a3637260c8aeb5cda50d28968db5f7165d5741bb999dad92e5a88b99d34922edb66058c6f4be272a2ac85b85c#npm:2.0.0-rc.33"],
+            ["@yarnpkg/core", "npm:2.0.0-rc.27"],
+            ["@yarnpkg/fslib", "npm:2.0.0-rc.20"],
+            ["@yarnpkg/plugin-pack", "virtual:095b9b40304c89cbce2d50564d7cc2fefba0688356e3f01cb118badcbda0663183589b08d33f70f68027688a7e5b165d871407c0de023a8dcbb59be83c60027f#npm:2.0.0-rc.19"],
             ["clipanion", "npm:2.2.2"],
             ["typescript", "patch:typescript@npm%3A3.9.2#builtin<compat/typescript>::version=3.9.2&hash=8cac75"]
           ],
