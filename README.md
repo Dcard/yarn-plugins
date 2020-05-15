@@ -1,6 +1,6 @@
 # yarn-plugins
 
-[![GitHub release](https://img.shields.io/github/release/Dcard/yarn-plugins.svg)](https://github.com/tommy351/pullup/releases) ![Build](https://github.com/Dcard/yarn-plugins/workflows/Build/badge.svg)
+[![GitHub release](https://img.shields.io/github/release/Dcard/yarn-plugins.svg)](https://github.com/Dcard/yarn-plugins/releases) ![Build](https://github.com/Dcard/yarn-plugins/workflows/Build/badge.svg)
 
 Yarn plugins for Yarn 2.
 
