@@ -20,6 +20,10 @@ jobs:
       - run: yarn constraints
       - run: yarn lint
       - run: yarn workspaces foreach --verbose --topological-dev --parallel --interlaced run build
+      - uses: actions/upload-artifact@v2
+        with:
+          name: bundles
+          path: packages/*/bundles/**/*.js
       - run: yarn test
       - run: yarn semantic-release
         env:
