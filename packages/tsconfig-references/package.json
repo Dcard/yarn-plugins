@@ -10,11 +10,11 @@
   },
   "devDependencies": {
     "@types/detect-indent": "6.0.0",
-    "@yarnpkg/builder": "^2.0.0-rc.21",
-    "@yarnpkg/cli": "^2.0.0-rc.33",
-    "@yarnpkg/core": "^2.0.0-rc.27",
-    "@yarnpkg/fslib": "^2.0.0-rc.20",
-    "@yarnpkg/plugin-essentials": "^2.0.0-rc.27",
-    "typescript": "^3.9.2"
+    "@yarnpkg/builder": "^2.1.0",
+    "@yarnpkg/cli": "^2.1.1",
+    "@yarnpkg/core": "^2.1.1",
+    "@yarnpkg/fslib": "^2.1.0",
+    "@yarnpkg/plugin-essentials": "^2.1.0",
+    "typescript": "^3.9.7"
   }
 }
