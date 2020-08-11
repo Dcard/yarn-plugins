@@ -18,6 +18,7 @@ import copyManifests from '../utils/copyManifests';
 import copyCacheMarkedFiles from '../utils/copyCacheMarkedFiles';
 import generateLockfile from '../utils/generateLockfile';
 import packWorkspace from '../utils/packWorkspace';
+import copyAdditional from '../utils/copyAdditional';
 
 export default class DockerBuildCommand extends BaseCommand {
   @Command.String()
@@ -29,6 +30,9 @@ export default class DockerBuildCommand extends BaseCommand {
   @Command.String('-f,--file')
   public dockerFilePath?: string;
 
+  @Command.Array('--copy')
+  public copyFiles?: string[];
+
   public static usage = Command.Usage({
     category: 'Docker-related commands',
     description: 'Build a Docker image for a workspace',
@@ -38,12 +42,18 @@ export default class DockerBuildCommand extends BaseCommand {
       You have to create a Dockerfile in your workspace or your project. You can also specify the path to Dockerfile using the "-f, --file" option.
 
       Additional arguments can be passed to "docker build" directly, please check the Docker docs for more info: https://docs.docker.com/engine/reference/commandline/build/
+
+      You can copy additional files or folders to a Docker image using the "--copy" option. This is useful for secret keys or configuration files. The files will be copied to "manifests" folder. The path can be either a path relative to the Dockerfile or an absolute path.
     `,
     examples: [
       ['Build a Docker image for a workspace', 'yarn docker build @foo/bar'],
       [
         'Pass additional arguments to docker build command',
         'yarn docker build @foo/bar -t image-tag',
+      ],
+      [
+        'Copy additional files to a Docker image',
+        'yarn docker build --copy secret.key --copy config.json @foo/bar',
       ],
     ],
   });
@@ -129,6 +139,15 @@ export default class DockerBuildCommand extends BaseCommand {
               project,
               report,
             });
+
+            if (this.copyFiles && this.copyFiles.length) {
+              await copyAdditional({
+                destination: manifestDir,
+                files: this.copyFiles,
+                dockerFilePath,
+                report,
+              });
+            }
           });
 
           for (const ws of requiredWorkspaces) {
