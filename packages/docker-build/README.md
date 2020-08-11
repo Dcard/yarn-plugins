@@ -58,8 +58,13 @@ Example:
 ```sh
 yarn docker build @foo/bar
 yarn docker build @foo/bar -t image-tag
+yarn docker build --copy secret.key --copy config.json @foo/bar
 ```
 
 #### `-f,--file`
 
 Path to `Dockerfile`. Default to the Dockerfile in the workspace or the project.
+
+#### `--copy`
+
+Copy additional files to a Docker image. This is useful for secret keys or configuration files. The files will be copied to `manifests` folder. The path can be either a path relative to the Dockerfile or an absolute path.
