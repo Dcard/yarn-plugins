@@ -36,7 +36,7 @@ export default class TestWorkspace {
     await remove(this.path);
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public yarn(args?: string[], options?: execa.Options) {
     return execa('yarn', args, {
       cwd: this.path,
