@@ -27,13 +27,13 @@ export default class TestProject {
 
     const yarnConfig = safeLoad(
       await readFile(join(PROJECT_DIR, '.yarnrc.yml'), 'utf8'),
-    );
+    ) as Record<string, unknown>;
 
     // Create .yarnrc.yml
     await outputFile(
       join(dir.path, '.yarnrc.yml'),
       safeDump({
-        yarnPath: join(PROJECT_DIR, yarnConfig.yarnPath),
+        yarnPath: join(PROJECT_DIR, yarnConfig.yarnPath as string),
         plugins: plugins.map((plugin) => ({
           path: plugin.dest,
           spec: plugin.name,
