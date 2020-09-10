@@ -570,6 +570,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@yarnpkg/core", "npm:2.2.2"],
             ["@yarnpkg/fslib", "npm:2.2.1"],
             ["@yarnpkg/plugin-pack", "virtual:c2e80915340bb809f3de434cc78ee9a45b9161014b960659e8f8ced61c68c2bd767880ffe16710532315879b144bfb59d5d9f7d28251b1f74d73c69feaaf71a2#npm:2.2.0"],
+            ["@yarnpkg/plugin-patch", "virtual:c2e80915340bb809f3de434cc78ee9a45b9161014b960659e8f8ced61c68c2bd767880ffe16710532315879b144bfb59d5d9f7d28251b1f74d73c69feaaf71a2#npm:2.1.1"],
             ["clipanion", "npm:2.4.4"],
             ["typescript", "patch:typescript@npm%3A4.0.2#builtin<compat/typescript>::version=4.0.2&hash=5b02a2"]
           ],
