@@ -18,7 +18,9 @@ export default async function copyPatchFiles({
     for (const descriptor of ws.dependencies.values()) {
       if (!descriptor.range.startsWith('patch:')) continue;
 
-      const { patchPaths } = patchUtils.parseDescriptor(descriptor);
+      const { parentLocator, patchPaths } = patchUtils.parseDescriptor(
+        descriptor,
+      );
 
       for (const path of patchPaths) {
         // Ignore builtin modules
@@ -27,7 +29,10 @@ export default async function copyPatchFiles({
         // TODO: Handle absolute path
         if (ppath.isAbsolute(path)) continue;
 
-        const src = ppath.join(ws.relativeCwd, path);
+        if (!parentLocator) continue;
+
+        const parentWorkspace = ws.project.getWorkspaceByLocator(parentLocator);
+        const src = ppath.join(parentWorkspace.relativeCwd, path);
         const dest = ppath.join(destination, src);
 
         report.reportInfo(null, src);
