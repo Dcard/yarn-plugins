@@ -14,6 +14,8 @@ export default async function copyPatchFiles({
   workspaces: Workspace[];
   report: Report;
 }): Promise<void> {
+  const copiedPaths = new Set<string>();
+
   for (const ws of workspaces) {
     for (const descriptor of ws.dependencies.values()) {
       if (!descriptor.range.startsWith('patch:')) continue;
@@ -31,11 +33,21 @@ export default async function copyPatchFiles({
 
         if (!parentLocator) continue;
 
+        // Get the workspace by parentLocator
         const parentWorkspace = ws.project.getWorkspaceByLocator(parentLocator);
-        const src = ppath.join(parentWorkspace.relativeCwd, path);
-        const dest = ppath.join(destination, src);
 
-        report.reportInfo(null, src);
+        // The path relative to the project CWD
+        const relativePath = ppath.join(parentWorkspace.relativeCwd, path);
+
+        // Skip if the path has been copied already
+        if (copiedPaths.has(relativePath)) continue;
+
+        copiedPaths.add(relativePath);
+
+        const src = ppath.join(parentWorkspace.cwd, path);
+        const dest = ppath.join(destination, relativePath);
+
+        report.reportInfo(null, relativePath);
         await xfs.mkdirpPromise(ppath.dirname(dest));
         await xfs.copyFilePromise(src, dest);
       }
