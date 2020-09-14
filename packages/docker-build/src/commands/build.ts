@@ -19,6 +19,7 @@ import copyCacheMarkedFiles from '../utils/copyCacheMarkedFiles';
 import generateLockfile from '../utils/generateLockfile';
 import packWorkspace from '../utils/packWorkspace';
 import copyAdditional from '../utils/copyAdditional';
+import copyPatchFiles from '../utils/copyPatchFiles';
 
 export default class DockerBuildCommand extends BaseCommand {
   @Command.String()
@@ -122,6 +123,12 @@ export default class DockerBuildCommand extends BaseCommand {
             });
 
             await copyManifests({
+              destination: manifestDir,
+              workspaces: project.workspaces,
+              report,
+            });
+
+            await copyPatchFiles({
               destination: manifestDir,
               workspaces: project.workspaces,
               report,

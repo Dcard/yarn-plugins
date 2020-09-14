@@ -408,6 +408,7 @@ __metadata:
     "@yarnpkg/core": ^2.2.2
     "@yarnpkg/fslib": ^2.2.1
     "@yarnpkg/plugin-pack": ^2.2.0
+    "@yarnpkg/plugin-patch": ^2.1.1
     clipanion: ^2.4.4
     typescript: ^4.0.2
   languageName: unknown
