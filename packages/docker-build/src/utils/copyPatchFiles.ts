@@ -1,4 +1,4 @@
-import { Report, Workspace } from '@yarnpkg/core';
+import { Report, structUtils, Workspace } from '@yarnpkg/core';
 import { PortablePath, ppath, xfs } from '@yarnpkg/fslib';
 import { patchUtils } from '@yarnpkg/plugin-patch';
 
@@ -18,10 +18,14 @@ export default async function copyPatchFiles({
 
   for (const ws of workspaces) {
     for (const descriptor of ws.dependencies.values()) {
-      if (!descriptor.range.startsWith('patch:')) continue;
+      const patchDescriptor = structUtils.isVirtualDescriptor(descriptor)
+        ? structUtils.devirtualizeDescriptor(descriptor)
+        : descriptor;
+
+      if (!patchDescriptor.range.startsWith('patch:')) continue;
 
       const { parentLocator, patchPaths } = patchUtils.parseDescriptor(
-        descriptor,
+        patchDescriptor,
       );
 
       for (const path of patchPaths) {
