@@ -22,7 +22,7 @@
     "url": "https://github.com/Dcard/yarn-plugins.git"
   },
   "dependencies": {
-    "@yarnpkg/pnpify": "^2.2.1"
+    "@yarnpkg/pnpify": "^2.4.0"
   },
   "devDependencies": {
     "@types/eslint": "7.2.0",
