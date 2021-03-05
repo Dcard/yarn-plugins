@@ -8,6 +8,7 @@ import {
   StreamReport,
   execUtils,
 } from '@yarnpkg/core';
+import { patchUtils } from '@yarnpkg/plugin-patch';
 import getDockerFilePath from '../utils/getDockerFilePath';
 import getRequiredWorkspaces from '../utils/getRequiredWorkspaces';
 import copyRcFile from '../utils/copyRcFile';
@@ -19,7 +20,8 @@ import copyCacheMarkedFiles from '../utils/copyCacheMarkedFiles';
 import generateLockfile from '../utils/generateLockfile';
 import packWorkspace from '../utils/packWorkspace';
 import copyAdditional from '../utils/copyAdditional';
-import copyPatchFiles from '../utils/copyPatchFiles';
+import copyProtocolFiles from '../utils/copyProtocolFiles';
+import { parseSpec } from '../utils/execUtils';
 
 export default class DockerBuildCommand extends BaseCommand {
   @Command.String()
@@ -128,10 +130,27 @@ export default class DockerBuildCommand extends BaseCommand {
               report,
             });
 
-            await copyPatchFiles({
+            await copyProtocolFiles({
               destination: manifestDir,
               workspaces: project.workspaces,
               report,
+              parseDescriptor: (descriptor) => {
+                if (descriptor.range.startsWith('exec:')) {
+                  const parsed = parseSpec(descriptor.range);
+                  if (!parsed || !parsed.parentLocator) return;
+                  return {
+                    parentLocator: parsed.parentLocator,
+                    paths: [parsed.path],
+                  };
+                } else if (descriptor.range.startsWith('patch:')) {
+                  const {
+                    parentLocator,
+                    patchPaths: paths,
+                  } = patchUtils.parseDescriptor(descriptor);
+                  if (!parentLocator) return;
+                  return { parentLocator, paths };
+                }
+              },
             });
 
             await copyCacheMarkedFiles({
