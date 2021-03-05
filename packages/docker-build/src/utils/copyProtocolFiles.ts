@@ -1,18 +1,27 @@
-import { Report, structUtils, Workspace } from '@yarnpkg/core';
+import {
+  Descriptor,
+  Locator,
+  Report,
+  structUtils,
+  Workspace,
+} from '@yarnpkg/core';
 import { PortablePath, ppath, xfs } from '@yarnpkg/fslib';
-import { patchUtils } from '@yarnpkg/plugin-patch';
 
 // https://github.com/yarnpkg/berry/blob/d38d573/packages/plugin-patch/sources/patchUtils.ts#L10
 const BUILTIN_REGEXP = /^builtin<([^>]+)>$/;
 
-export default async function copyPatchFiles({
+export default async function copyProtocolFiles({
   destination,
   workspaces,
   report,
+  parseDescriptor,
 }: {
   destination: PortablePath;
   workspaces: Workspace[];
   report: Report;
+  parseDescriptor: (
+    descriptor: Descriptor,
+  ) => { parentLocator: Locator; paths: PortablePath[] } | undefined;
 }): Promise<void> {
   const copiedPaths = new Set<string>();
 
@@ -22,20 +31,17 @@ export default async function copyPatchFiles({
         ? structUtils.devirtualizeDescriptor(descriptor)
         : descriptor;
 
-      if (!patchDescriptor.range.startsWith('patch:')) continue;
+      const parsed = parseDescriptor(patchDescriptor);
+      if (!parsed) continue;
 
-      const { parentLocator, patchPaths } = patchUtils.parseDescriptor(
-        patchDescriptor,
-      );
+      const { parentLocator, paths } = parsed;
 
-      for (const path of patchPaths) {
+      for (const path of paths) {
         // Ignore builtin modules
         if (BUILTIN_REGEXP.test(path)) continue;
 
         // TODO: Handle absolute path
         if (ppath.isAbsolute(path)) continue;
-
-        if (!parentLocator) continue;
 
         // Get the workspace by parentLocator
         const parentWorkspace = ws.project.getWorkspaceByLocator(parentLocator);
