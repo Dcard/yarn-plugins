@@ -132,8 +132,8 @@ export default class DockerBuildCommand extends BaseCommand {
 
             await copyProtocolFiles({
               destination: manifestDir,
-              workspaces: project.workspaces,
               report,
+              project,
               parseDescriptor: (descriptor) => {
                 if (descriptor.range.startsWith('exec:')) {
                   const parsed = parseSpec(descriptor.range);
