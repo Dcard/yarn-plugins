@@ -24,6 +24,9 @@ export default class ChangedForeachCommand extends FilterCommand {
   @Command.Boolean('-i,--interlaced')
   interlaced = false;
 
+  @Command.Boolean('-t,--topological')
+  topological = false;
+
   @Command.String('-j,--jobs')
   jobs?: number;
 
@@ -92,6 +95,7 @@ export default class ChangedForeachCommand extends FilterCommand {
         ...(this.verbose ? ['--verbose'] : []),
         ...(this.parallel ? ['--parallel'] : []),
         ...(this.interlaced ? ['--interlaced'] : []),
+        ...(this.topological ? ['--topological'] : []),
         ...(this.jobs ? ['--jobs', `${this.jobs}`] : []),
         this.commandName,
         ...this.args,
