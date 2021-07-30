@@ -5,13 +5,13 @@ import listChangedWorkspaces from '../utils/listChangedWorkspaces';
 
 export abstract class FilterCommand extends BaseCommand {
   @Command.String('--git-range')
-  public gitRange = '';
+  public gitRange?: string;
 
   @Command.Array('--include')
-  public include: string[] = [];
+  public include?: string[];
 
   @Command.Array('--exclude')
-  public exclude: string[] = [];
+  public exclude?: string[];
 
   protected async listWorkspaces(
     project: Project,
@@ -26,16 +26,18 @@ export abstract class FilterCommand extends BaseCommand {
     );
     const files = stdout.split(/\r?\n/);
     const workspaces = listChangedWorkspaces(project, files);
+    const include = this.include || [];
+    const exclude = this.exclude || [];
 
     return workspaces.filter((ws) => {
       const name = structUtils.stringifyIdent(ws.locator);
 
       if (name) {
-        if (this.include.length && !this.include.includes(name)) {
+        if (include.length && !include.includes(name)) {
           return false;
         }
 
-        if (this.exclude.length && this.exclude.includes(name)) {
+        if (exclude.length && exclude.includes(name)) {
           return false;
         }
       }
