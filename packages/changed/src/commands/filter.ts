@@ -13,6 +13,9 @@ export abstract class FilterCommand extends BaseCommand {
   @Command.Array('--exclude')
   public exclude?: string[];
 
+  @Command.Boolean('--exclude-dependents')
+  public excludeDependents?: boolean;
+
   protected async listWorkspaces(
     project: Project,
   ): Promise<readonly Workspace[]> {
@@ -25,7 +28,12 @@ export abstract class FilterCommand extends BaseCommand {
       },
     );
     const files = stdout.split(/\r?\n/);
-    const workspaces = listChangedWorkspaces(project, files);
+
+    const workspaces = listChangedWorkspaces(
+      project,
+      files,
+      this.excludeDependents ?? false,
+    );
     const include = this.include || [];
     const exclude = this.exclude || [];
 

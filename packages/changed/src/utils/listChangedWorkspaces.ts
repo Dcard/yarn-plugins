@@ -4,6 +4,7 @@ import getWorkspaceDependents from './getWorkspaceDependents';
 export default function listChangedWorkspaces(
   project: Project,
   files: readonly string[],
+  excludeDependents: boolean,
 ): readonly Workspace[] {
   const workspaces = new Set<Workspace>();
 
@@ -13,8 +14,10 @@ export default function listChangedWorkspaces(
     if (changed && !workspaces.has(ws)) {
       workspaces.add(ws);
 
-      for (const dep of getWorkspaceDependents(ws)) {
-        workspaces.add(dep);
+      if (!excludeDependents) {
+        for (const dep of getWorkspaceDependents(ws)) {
+          workspaces.add(dep);
+        }
       }
     }
   }
