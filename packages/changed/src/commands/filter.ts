@@ -16,6 +16,9 @@ export abstract class FilterCommand extends BaseCommand {
   @Command.Boolean('--exclude-dependents')
   public excludeDependents?: boolean;
 
+  @Command.Boolean('--public-only')
+  public publicOnly?: boolean;
+
   protected async listWorkspaces(
     project: Project,
   ): Promise<readonly Workspace[]> {
@@ -46,6 +49,12 @@ export abstract class FilterCommand extends BaseCommand {
         }
 
         if (exclude.length && exclude.includes(name)) {
+          return false;
+        }
+      }
+
+      if (this.publicOnly) {
+        if (ws.manifest.private === true) {
           return false;
         }
       }
