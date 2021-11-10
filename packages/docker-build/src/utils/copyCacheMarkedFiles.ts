@@ -15,7 +15,9 @@ export default async function copyCacheMarkedFiles({
   for (const src of cache.markedFiles) {
     const path = ppath.relative(project.cwd, src);
 
-    report.reportInfo(null, path);
-    await xfs.copyPromise(ppath.join(destination, path), src);
+    if (await xfs.existsPromise(src)) {
+      report.reportInfo(null, path);
+      await xfs.copyPromise(ppath.join(destination, path), src);
+    }
   }
 }
