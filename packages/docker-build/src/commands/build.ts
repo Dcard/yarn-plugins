@@ -12,7 +12,7 @@ import { patchUtils } from '@yarnpkg/plugin-patch';
 import getDockerFilePath from '../utils/getDockerFilePath';
 import getRequiredWorkspaces from '../utils/getRequiredWorkspaces';
 import copyRcFile from '../utils/copyRcFile';
-import { toFilename, ppath, xfs } from '@yarnpkg/fslib';
+import { toFilename, ppath, xfs, PortablePath, npath } from '@yarnpkg/fslib';
 import copyPlugins from '../utils/copyPlugins';
 import copyYarnRelease from '../utils/copyYarnRelease';
 import copyManifests from '../utils/copyManifests';
@@ -30,11 +30,23 @@ export default class DockerBuildCommand extends BaseCommand {
   @Command.Proxy()
   public args: string[] = [];
 
-  @Command.String('-f,--file')
+  @Command.String('-f,--file', {
+    description:
+      'Path to Dockerfile. Default to Dockerfile in the current workspace or the whole project.',
+  })
   public dockerFilePath?: string;
 
-  @Command.Array('--copy')
+  @Command.Array('--copy', {
+    description:
+      'Copy additional files into manifests directory. This is useful for secret keys or configuration files. The files will be copied to "manifests" folder. The path can be either a path relative to the Dockerfile or an absolute path.',
+  })
   public copyFiles?: string[];
+
+  @Command.String('--build-context', {
+    description:
+      'Path to build context directory, which will be used to store cache, manifests and packed packages. Default to a temporary folder. You could set other paths for better I/O performance or debugging.',
+  })
+  public buildContext?: string;
 
   public static usage = Command.Usage({
     category: 'Docker-related commands',
@@ -42,11 +54,7 @@ export default class DockerBuildCommand extends BaseCommand {
     details: `
       This command will build a efficient Docker image which only contains production dependencies for the specified workspace.
 
-      You have to create a Dockerfile in your workspace or your project. You can also specify the path to Dockerfile using the "-f, --file" option.
-
       Additional arguments can be passed to "docker build" directly, please check the Docker docs for more info: https://docs.docker.com/engine/reference/commandline/build/
-
-      You can copy additional files or folders to a Docker image using the "--copy" option. This is useful for secret keys or configuration files. The files will be copied to "manifests" folder. The path can be either a path relative to the Dockerfile or an absolute path.
     `,
     examples: [
       ['Build a Docker image for a workspace', 'yarn docker build @foo/bar'],
@@ -101,113 +109,122 @@ export default class DockerBuildCommand extends BaseCommand {
           await project.fetchEverything({ report, cache });
         });
 
-        await xfs.mktempPromise(async (cwd) => {
-          const manifestDir = ppath.join(cwd, toFilename('manifests'));
-          const packDir = ppath.join(cwd, toFilename('packs'));
+        const cwd = await this.getBuildContext();
+        const manifestDir = ppath.join(cwd, toFilename('manifests'));
+        const packDir = ppath.join(cwd, toFilename('packs'));
 
-          await report.startTimerPromise('Copy files', async () => {
-            await copyRcFile({
-              destination: manifestDir,
-              project,
-              report,
-            });
-
-            await copyPlugins({
-              destination: manifestDir,
-              project,
-              report,
-            });
-
-            await copyYarnRelease({
-              destination: manifestDir,
-              project,
-              report,
-            });
-
-            await copyManifests({
-              destination: manifestDir,
-              workspaces: project.workspaces,
-              report,
-            });
-
-            await copyProtocolFiles({
-              destination: manifestDir,
-              report,
-              project,
-              parseDescriptor: (descriptor) => {
-                if (descriptor.range.startsWith('exec:')) {
-                  const parsed = parseSpec(descriptor.range);
-                  if (!parsed || !parsed.parentLocator) return;
-                  return {
-                    parentLocator: parsed.parentLocator,
-                    paths: [parsed.path],
-                  };
-                } else if (descriptor.range.startsWith('patch:')) {
-                  const {
-                    parentLocator,
-                    patchPaths: paths,
-                  } = patchUtils.parseDescriptor(descriptor);
-                  if (!parentLocator) return;
-                  return { parentLocator, paths };
-                }
-              },
-            });
-
-            await copyCacheMarkedFiles({
-              destination: manifestDir,
-              project,
-              cache,
-              report,
-            });
-
-            await generateLockfile({
-              destination: manifestDir,
-              project,
-              report,
-            });
-
-            if (this.copyFiles && this.copyFiles.length) {
-              await copyAdditional({
-                destination: manifestDir,
-                files: this.copyFiles,
-                dockerFilePath,
-                report,
-              });
-            }
+        await report.startTimerPromise('Copy files', async () => {
+          await copyRcFile({
+            destination: manifestDir,
+            project,
+            report,
           });
 
-          for (const ws of requiredWorkspaces) {
-            const name = ws.manifest.name
-              ? structUtils.stringifyIdent(ws.manifest.name)
-              : '';
+          await copyPlugins({
+            destination: manifestDir,
+            project,
+            report,
+          });
 
-            await report.startTimerPromise(
-              `Pack workspace ${name}`,
-              async () => {
-                await packWorkspace({
-                  workspace: ws,
-                  report,
-                  destination: packDir,
-                });
-              },
-            );
-          }
+          await copyYarnRelease({
+            destination: manifestDir,
+            project,
+            report,
+          });
 
-          await execUtils.pipevp(
-            'docker',
-            ['build', ...this.args, '-f', dockerFilePath, '.'],
-            {
-              cwd,
-              strict: true,
-              stdin: this.context.stdin,
-              stdout: this.context.stdout,
-              stderr: this.context.stderr,
+          await copyManifests({
+            destination: manifestDir,
+            workspaces: project.workspaces,
+            report,
+          });
+
+          await copyProtocolFiles({
+            destination: manifestDir,
+            report,
+            project,
+            parseDescriptor: (descriptor) => {
+              if (descriptor.range.startsWith('exec:')) {
+                const parsed = parseSpec(descriptor.range);
+                if (!parsed || !parsed.parentLocator) return;
+                return {
+                  parentLocator: parsed.parentLocator,
+                  paths: [parsed.path],
+                };
+              } else if (descriptor.range.startsWith('patch:')) {
+                const {
+                  parentLocator,
+                  patchPaths: paths,
+                } = patchUtils.parseDescriptor(descriptor);
+                if (!parentLocator) return;
+                return { parentLocator, paths };
+              }
             },
-          );
+          });
+
+          await copyCacheMarkedFiles({
+            destination: manifestDir,
+            project,
+            cache,
+            report,
+          });
+
+          await generateLockfile({
+            destination: manifestDir,
+            project,
+            report,
+          });
+
+          if (this.copyFiles && this.copyFiles.length) {
+            await copyAdditional({
+              destination: manifestDir,
+              files: this.copyFiles,
+              dockerFilePath,
+              report,
+            });
+          }
         });
+
+        for (const ws of requiredWorkspaces) {
+          const name = ws.manifest.name
+            ? structUtils.stringifyIdent(ws.manifest.name)
+            : '';
+
+          await report.startTimerPromise(`Pack workspace ${name}`, async () => {
+            await packWorkspace({
+              workspace: ws,
+              report,
+              destination: packDir,
+            });
+          });
+        }
+
+        await execUtils.pipevp(
+          'docker',
+          ['build', ...this.args, '-f', dockerFilePath, '.'],
+          {
+            cwd,
+            strict: true,
+            stdin: this.context.stdin,
+            stdout: this.context.stdout,
+            stderr: this.context.stderr,
+          },
+        );
       },
     );
 
     return report.exitCode();
+  }
+
+  private async getBuildContext(): Promise<PortablePath> {
+    if (!this.buildContext) return xfs.mktempPromise();
+
+    const dir = ppath.resolve(
+      this.context.cwd,
+      npath.toPortablePath(this.buildContext),
+    );
+
+    await xfs.mkdirpPromise(dir);
+
+    return dir;
   }
 }
