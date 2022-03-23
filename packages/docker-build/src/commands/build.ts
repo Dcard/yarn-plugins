@@ -36,11 +36,14 @@ export default class DockerBuildCommand extends BaseCommand {
   @Command.Array('--copy')
   public copyFiles?: string[];
 
+  @Command.Boolean('--production')
+  public production?: boolean;
+
   public static usage = Command.Usage({
     category: 'Docker-related commands',
     description: 'Build a Docker image for a workspace',
     details: `
-      This command will build a efficient Docker image which only contains production dependencies for the specified workspace.
+      This command will build a efficient Docker image which only contains necessary dependencies for the specified workspace.
 
       You have to create a Dockerfile in your workspace or your project. You can also specify the path to Dockerfile using the "-f, --file" option.
 
@@ -57,6 +60,10 @@ export default class DockerBuildCommand extends BaseCommand {
       [
         'Copy additional files to a Docker image',
         'yarn docker build --copy secret.key --copy config.json @foo/bar',
+      ],
+      [
+        'Install production dependencies only',
+        'yarn docker build --production @foo/bar',
       ],
     ],
   });
@@ -76,7 +83,7 @@ export default class DockerBuildCommand extends BaseCommand {
     const requiredWorkspaces = getRequiredWorkspaces({
       project,
       workspaces: [workspace],
-      production: true,
+      production: this.production,
     });
 
     const dockerFilePath = await getDockerFilePath(
