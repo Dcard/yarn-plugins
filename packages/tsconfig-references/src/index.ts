@@ -13,6 +13,7 @@ interface TsReference {
 
 interface TsConfig {
   indent: string;
+  newLineEOF: string;
   references?: TsReference[];
   [key: string]: unknown;
 }
@@ -29,15 +30,19 @@ async function readTsConfig(
   return {
     ...JSON.parse(content),
     indent: detectIndent(content).indent,
+    newLineEOF: getNewLineAtEOF(content),
   };
 }
 
 async function writeTsConfig(
   workspace: Workspace,
-  { indent, ...tsConfig }: TsConfig,
+  { indent, newLineEOF, ...tsConfig }: TsConfig,
 ): Promise<void> {
   const path = getTsConfigPath(workspace);
-  await xfs.writeFilePromise(path, JSON.stringify(tsConfig, null, indent));
+  await xfs.writeFilePromise(
+    path,
+    JSON.stringify(tsConfig, null, indent) + newLineEOF,
+  );
 }
 
 async function isTsWorkspace(workspace: Workspace): Promise<boolean> {
@@ -120,3 +125,17 @@ const plugin: Plugin<Hooks> = {
 };
 
 export default plugin;
+
+function getNewLineAtEOF(input: string) {
+  const length = input.length;
+
+  if (input[length - 1] === '\n') {
+    if (input[length - 2] === '\r') {
+      return '\r\n';
+    }
+
+    return '\n';
+  }
+
+  return '';
+}
