@@ -15,7 +15,7 @@ yarn plugin import https://github.com/Dcard/yarn-plugins/releases/latest/downloa
 The following is a basic example of `Dockerfile`.
 
 ```dockerfile
-FROM node:12-alpine AS builder
+FROM node:18-alpine AS builder
 
 # Install dependencies for building native libraries
 RUN apk add --update git openssh-client python make gcc g++
@@ -30,7 +30,7 @@ RUN yarn install --immutable
 # You can delete the cache folder after `yarn install` is done.
 RUN rm -rf .yarn/cache
 
-FROM node:12-alpine
+FROM node:18-alpine
 
 WORKDIR /workspace
 
