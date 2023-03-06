@@ -33,6 +33,16 @@ yarn changed list --git-range master
 yarn changed list --git-range 93a9ed8..4ef2c61
 ```
 
+#### `--cached`
+
+Look only at staged changes in git. Useful for local development.
+
+Example:
+
+```sh
+yarn changed list --cached
+```
+
 #### `--include`
 
 Include workspaces.
@@ -70,6 +80,10 @@ yarn changed list --json
 Run a command on changed workspaces and their dependents. This command relies on `yarn workspaces foreach` command. See more information about the options [here](https://yarnpkg.com/cli/workspaces/foreach).
 
 #### `--git-range`
+
+See `yarn changed list`.
+
+#### `--cached`
 
 See `yarn changed list`.
 

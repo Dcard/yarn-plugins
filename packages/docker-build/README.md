@@ -15,7 +15,7 @@ yarn plugin import https://github.com/Dcard/yarn-plugins/releases/latest/downloa
 The following is a basic example of `Dockerfile`.
 
 ```dockerfile
-FROM node:12-alpine AS builder
+FROM node:18-alpine AS builder
 
 # Install dependencies for building native libraries
 RUN apk add --update git openssh-client python make gcc g++
@@ -30,7 +30,7 @@ RUN yarn install --immutable
 # You can delete the cache folder after `yarn install` is done.
 RUN rm -rf .yarn/cache
 
-FROM node:12-alpine
+FROM node:18-alpine
 
 WORKDIR /workspace
 
@@ -68,3 +68,7 @@ Path to `Dockerfile`. Default to the Dockerfile in the workspace or the project.
 #### `--copy`
 
 Copy additional files to a Docker image. This is useful for secret keys or configuration files. The files will be copied to `manifests` folder. The path can be either a path relative to the Dockerfile or an absolute path.
+
+#### `--production`
+
+Install production dependencies only.

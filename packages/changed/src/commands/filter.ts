@@ -7,6 +7,9 @@ export abstract class FilterCommand extends BaseCommand {
   @Command.String('--git-range')
   public gitRange?: string;
 
+  @Command.Boolean('--cached')
+  public cached = false;
+
   @Command.Array('--include')
   public include?: string[];
 
@@ -18,7 +21,12 @@ export abstract class FilterCommand extends BaseCommand {
   ): Promise<readonly Workspace[]> {
     const { stdout } = await execUtils.execvp(
       'git',
-      ['diff', '--name-only', ...(this.gitRange ? [this.gitRange] : [])],
+      [
+        'diff',
+        '--name-only',
+        ...(this.cached ? ['--cached'] : []),
+        ...(this.gitRange ? [this.gitRange] : []),
+      ],
       {
         cwd: project.cwd,
         strict: true,
