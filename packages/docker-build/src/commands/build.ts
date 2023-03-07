@@ -1,5 +1,4 @@
-import { BaseCommand } from '@yarnpkg/cli';
-import { Command } from 'clipanion';
+import { Command, Option } from 'clipanion';
 import {
   Configuration,
   Project,
@@ -7,6 +6,7 @@ import {
   structUtils,
   StreamReport,
   execUtils,
+  CommandContext,
 } from '@yarnpkg/core';
 import { patchUtils } from '@yarnpkg/plugin-patch';
 import getDockerFilePath from '../utils/getDockerFilePath';
@@ -23,23 +23,18 @@ import copyAdditional from '../utils/copyAdditional';
 import copyProtocolFiles from '../utils/copyProtocolFiles';
 import { parseSpec } from '../utils/execUtils';
 
-export default class DockerBuildCommand extends BaseCommand {
-  @Command.String()
-  public workspaceName!: string;
+export default class DockerBuildCommand extends Command<CommandContext> {
+  public workspaceName: string = Option.String();
 
-  @Command.Proxy()
-  public args: string[] = [];
+  public args: string[] = Option.Proxy();
 
-  @Command.String('-f,--file')
-  public dockerFilePath?: string;
+  public dockerFilePath?: string = Option.String('-f,--file');
 
-  @Command.Array('--copy')
-  public copyFiles?: string[];
+  public copyFiles?: string[] = Option.Array('--copy');
 
-  @Command.Boolean('--production')
-  public production?: boolean;
+  public production?: boolean = Option.Boolean('--production');
 
-  public static usage = Command.Usage({
+  public static usage = {
     category: 'Docker-related commands',
     description: 'Build a Docker image for a workspace',
     details: `
@@ -51,7 +46,7 @@ export default class DockerBuildCommand extends BaseCommand {
 
       You can copy additional files or folders to a Docker image using the "--copy" option. This is useful for secret keys or configuration files. The files will be copied to "manifests" folder. The path can be either a path relative to the Dockerfile or an absolute path.
     `,
-    examples: [
+    usage: [
       ['Build a Docker image for a workspace', 'yarn docker build @foo/bar'],
       [
         'Pass additional arguments to docker build command',
@@ -66,9 +61,10 @@ export default class DockerBuildCommand extends BaseCommand {
         'yarn docker build --production @foo/bar',
       ],
     ],
-  });
+  };
 
-  @Command.Path('docker', 'build')
+  static paths = [['docker', 'build']];
+
   public async execute(): Promise<number> {
     const configuration = await Configuration.find(
       this.context.cwd,
@@ -102,10 +98,6 @@ export default class DockerBuildCommand extends BaseCommand {
       async (report) => {
         await report.startTimerPromise('Resolution Step', async () => {
           await project.resolveEverything({ report, cache });
-        });
-
-        await report.startTimerPromise('Fetch Step', async () => {
-          await project.fetchEverything({ report, cache });
         });
 
         await xfs.mktempPromise(async (cwd) => {
