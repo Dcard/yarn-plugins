@@ -2,7 +2,7 @@
 # Manual changes might be lost - proceed with caution!
 
 __metadata:
-  version: 4
+  version: 6
   cacheKey: 8
 
 "@arcanis/slice-ansi@npm:^1.0.2":
@@ -2025,17 +2025,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@yarnpkg/fslib@npm:^2.5.0":
-  version: 2.5.0
-  resolution: "@yarnpkg/fslib@npm:2.5.0"
-  dependencies:
-    "@yarnpkg/libzip": ^2.2.2
-    tslib: ^1.13.0
-  checksum: 20948eeac66af6cc1c37b3e59a0730fdcadd5bea327e8a7954671c5ca9a1f3daee6d23f9906fd98f991b5a31c14e460961bf3c0de6530915862b89f4ab08f8a4
-  languageName: node
-  linkType: hard
-
-"@yarnpkg/fslib@npm:^2.5.1":
+"@yarnpkg/fslib@npm:^2.5.0, @yarnpkg/fslib@npm:^2.5.1":
   version: 2.5.2
   resolution: "@yarnpkg/fslib@npm:2.5.2"
   dependencies:
@@ -2580,23 +2570,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@yarnpkg/pnpify@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "@yarnpkg/pnpify@npm:3.0.0"
-  dependencies:
-    "@yarnpkg/core": ^3.0.0
-    "@yarnpkg/fslib": ^2.5.0
-    "@yarnpkg/nm": ^2.4.1
-    clipanion: ^3.0.1
-    cross-spawn: 7.0.3
-    tslib: ^1.13.0
-  bin:
-    pnpify: ./lib/cli.js
-  checksum: 072d007b589159ef432b326bf0b880b7e53e6b6f6abc365c196c34b0574fce6f72c06f6a53a2e8062d62654a6424c5996d3de29da1c171c09741438b7460656f
-  languageName: node
-  linkType: hard
-
-"@yarnpkg/pnpify@npm:^3.0.1-rc.8":
+"@yarnpkg/pnpify@npm:^3.0.0, @yarnpkg/pnpify@npm:^3.0.1-rc.8":
   version: 3.0.1
   resolution: "@yarnpkg/pnpify@npm:3.0.1"
   dependencies:
@@ -2720,12 +2694,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"acorn@npm:^8.0.4":
-  version: 8.0.5
-  resolution: "acorn@npm:8.0.5"
+"acorn@npm:^8.0.4, acorn@npm:^8.5.0":
+  version: 8.8.2
+  resolution: "acorn@npm:8.8.2"
   bin:
     acorn: bin/acorn
-  checksum: b832b37b93a1b2ac463279db6d3dd14f41794f6148c9bfbf5eb8b4eeade7b84aa381914d669befac8daaa5980a121df134ad145bb520ce36eb64c4d984994f80
+  checksum: f790b99a1bf63ef160c967e23c46feea7787e531292bb827126334612c234ed489a0dc2c7ba33156416f0ffa8d25bf2b0fdb7f35c2ba60eb3e960572bece4001
   languageName: node
   linkType: hard
 
@@ -3611,7 +3585,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chownr@npm:^1.1.1, chownr@npm:^1.1.2, chownr@npm:^1.1.4":
+"chownr@npm:^1.1.1, chownr@npm:^1.1.2, chownr@npm:^1.1.3, chownr@npm:^1.1.4":
   version: 1.1.4
   resolution: "chownr@npm:1.1.4"
   checksum: 115648f8eb38bac5e41c3857f3e663f9c39ed6480d1349977c4d96c95a47266fcacc5a5aabf3cb6c481e22d72f41992827db47301851766c4fd77ac21a4f081d
@@ -5592,15 +5566,16 @@ fsevents@^2.1.2:
   dependencies:
     node-gyp: latest
   checksum: 63fe1ba77b63d5da5dde6112c5f0eb161b9d18a61427a8a49d661eeed080189d99e8f9da11bb6b75ecd5129a69edc5757d60a4eb0bbada6de68d5156c382c5e1
+  conditions: os=darwin
   languageName: node
   linkType: hard
 
 "fsevents@patch:fsevents@^2.1.2#~builtin<compat/fsevents>":
   version: 2.1.2
-  resolution: "fsevents@patch:fsevents@npm%3A2.1.2#~builtin<compat/fsevents>::version=2.1.2&hash=1cc4b2"
+  resolution: "fsevents@patch:fsevents@npm%3A2.1.2#~builtin<compat/fsevents>::version=2.1.2&hash=31d12a"
   dependencies:
     node-gyp: latest
-  checksum: 1cf5ff06cfd99ca4b005b59d239aa7dd699407ac1ea3ab1b966405d8f61615e67aa87dcf76ae9ba9e7f7ba8a2649cbd5021b0ade58c90337c2577a9ed92f493a
+  conditions: os=darwin
   languageName: node
   linkType: hard
 
@@ -7250,7 +7225,7 @@ fsevents@^2.1.2:
   languageName: node
   linkType: hard
 
-"jest-resolve@npm:26.4.0, jest-resolve@npm:^26.4.0":
+"jest-resolve@npm:^26.4.0":
   version: 26.4.0
   resolution: "jest-resolve@npm:26.4.0"
   dependencies:
@@ -8740,6 +8715,17 @@ fsevents@^2.1.2:
     for-in: ^1.0.2
     is-extendable: ^1.0.1
   checksum: 820d5a51fcb7479f2926b97f2c3bb223546bc915e6b3a3eb5d906dda871bba569863595424a76682f2b15718252954644f3891437cb7e3f220949bed54b1750d
+  languageName: node
+  linkType: hard
+
+"mkdirp-infer-owner@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "mkdirp-infer-owner@npm:1.0.2"
+  dependencies:
+    chownr: ^1.1.3
+    infer-owner: ^1.0.4
+    mkdirp: ^1.0.3
+  checksum: 759dbc3c4266e25028bb051ca0d5003860bf68249a0d2c3417dc26a0d0f1b883936866e19840f93a0ffceaf8d3c1982cc0fad6667e55418d63eed0af684bcb54
   languageName: node
   linkType: hard
 
@@ -10819,11 +10805,11 @@ fsevents@^2.1.2:
 
 "resolve@patch:resolve@^1.10.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.17.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.20.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.3.2#~builtin<compat/resolve>":
   version: 1.20.0
-  resolution: "resolve@patch:resolve@npm%3A1.20.0#~builtin<compat/resolve>::version=1.20.0&hash=00b1ff"
+  resolution: "resolve@patch:resolve@npm%3A1.20.0#~builtin<compat/resolve>::version=1.20.0&hash=c3c19d"
   dependencies:
     is-core-module: ^2.2.0
     path-parse: ^1.0.6
-  checksum: bed00be983cd20a8af0e7840664f655c4b269786dbd9595c5f156cd9d8a0050e65cdbbbdafc30ee9b6245b230c78a2c8ab6447a52545b582f476c29adb188cc5
+  checksum: a0dd7d16a8e47af23afa9386df2dff10e3e0debb2c7299a42e581d9d9b04d7ad5d2c53f24f1e043f7b3c250cbdc71150063e53d0b6559683d37f790b7c8c3cd5
   languageName: node
   linkType: hard
 
@@ -11055,7 +11041,7 @@ fsevents@^2.1.2:
   languageName: node
   linkType: hard
 
-"semantic-release@npm:17.1.1, semantic-release@npm:^17.1.1":
+"semantic-release@npm:^17.1.1":
   version: 17.1.1
   resolution: "semantic-release@npm:17.1.1"
   dependencies:
@@ -12518,11 +12504,11 @@ typescript@^4.0.2:
 
 "typescript@patch:typescript@^4.0.2#~builtin<compat/typescript>":
   version: 4.0.2
-  resolution: "typescript@patch:typescript@npm%3A4.0.2#~builtin<compat/typescript>::version=4.0.2&hash=d8b4e7"
+  resolution: "typescript@patch:typescript@npm%3A4.0.2#~builtin<compat/typescript>::version=4.0.2&hash=ed6a74"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 362b7092be61b89e8a6b2f6e5629931417adc9c9d787b543f1cdbd2ad9c21231a8ff3c4991fa1b0b68dc0d979edcf67410c75a89ba9a4abb0547433196f3c2fb
+  checksum: b5d4ab564a427541d01c9da37d1ce46d401f21209432c24daaa33b9d82811c1928d64e0b16ae0f9c6cde67be3eed8ab9a214aab63e1f0643684313487d9a6b11
   languageName: node
   linkType: hard
 
