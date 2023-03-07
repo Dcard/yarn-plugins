@@ -7,11 +7,11 @@ jobs:
   build:
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: 14
-      - uses: actions/cache@v1
+      - uses: actions/cache@v3
         id: yarn-cache
         with:
           path: .yarn/cache
@@ -22,7 +22,7 @@ jobs:
       - run: yarn constraints
       - run: yarn lint
       - run: yarn workspaces foreach --verbose --topological-dev --parallel --interlaced run build
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: bundles
           path: packages/*/bundles/**/*.js
