@@ -207,7 +207,7 @@ export default class DockerBuildCommand extends BaseCommand {
             );
           }
 
-          const buildCommand = this.buildKit ? 'buildx build' : 'build';
+          const buildCommand = this.buildKit ? ['buildx', 'build'] : ['build'];
 
           await execUtils.pipevp(
             'docker',
