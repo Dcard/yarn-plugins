@@ -211,7 +211,7 @@ export default class DockerBuildCommand extends BaseCommand {
 
           await execUtils.pipevp(
             'docker',
-            [buildCommand, ...this.args, '-f', dockerFilePath, '.'],
+            [...buildCommand, ...this.args, '-f', dockerFilePath, '.'],
             {
               cwd,
               strict: true,
