@@ -72,3 +72,7 @@ Copy additional files to a Docker image. This is useful for secret keys or confi
 #### `--production`
 
 Install production dependencies only.
+
+#### `--buildkit`
+
+Build the Docker image using Docker BuildKit, please check the Docker docs for more info: https://docs.docker.com/engine/reference/commandline/buildx_build/

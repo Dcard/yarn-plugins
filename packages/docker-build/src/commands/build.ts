@@ -39,6 +39,9 @@ export default class DockerBuildCommand extends BaseCommand {
   @Command.Boolean('--production')
   public production?: boolean;
 
+  @Command.Boolean('--buildkit')
+  public buildKit?: boolean;
+
   public static usage = Command.Usage({
     category: 'Docker-related commands',
     description: 'Build a Docker image for a workspace',
@@ -64,6 +67,10 @@ export default class DockerBuildCommand extends BaseCommand {
       [
         'Install production dependencies only',
         'yarn docker build --production @foo/bar',
+      ],
+      [
+        'Build a Docker image using BuildKit',
+        'yarn docker build --buildkit @foo/bar',
       ],
     ],
   });
@@ -200,9 +207,11 @@ export default class DockerBuildCommand extends BaseCommand {
             );
           }
 
+          const buildCommand = this.buildKit ? ['buildx', 'build'] : ['build'];
+
           await execUtils.pipevp(
             'docker',
-            ['build', ...this.args, '-f', dockerFilePath, '.'],
+            [...buildCommand, ...this.args, '-f', dockerFilePath, '.'],
             {
               cwd,
               strict: true,
