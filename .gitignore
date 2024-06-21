@@ -3,3 +3,4 @@
 /.yarn/cache
 bundles/
 /.yarn/install-state.gz
+node_modules

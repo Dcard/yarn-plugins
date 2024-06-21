@@ -1,5 +1,5 @@
 import { Project, Report } from '@yarnpkg/core';
-import { PortablePath, toFilename, xfs, ppath } from '@yarnpkg/fslib';
+import { PortablePath, xfs, ppath, Filename } from '@yarnpkg/fslib';
 
 export default async function generateLockfile({
   destination,
@@ -10,7 +10,7 @@ export default async function generateLockfile({
   project: Project;
   report: Report;
 }): Promise<void> {
-  const filename = toFilename(project.configuration.get('lockfileFilename'));
+  const filename = project.configuration.get('lockfileFilename') as Filename;
   const dest = ppath.join(destination, filename);
 
   report.reportInfo(null, filename);

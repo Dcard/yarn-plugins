@@ -1,5 +1,5 @@
 import { FilterCommand } from './filter';
-import { Command } from 'clipanion';
+import { Command, Option } from 'clipanion';
 import {
   Configuration,
   Project,
@@ -9,26 +9,25 @@ import {
 import { WorkspaceRequiredError } from '@yarnpkg/cli';
 
 export default class ChangedForeachCommand extends FilterCommand {
-  @Command.String()
-  commandName!: string;
+  commandName: string = Option.String();
 
-  @Command.Proxy()
-  args: string[] = [];
+  args: string[] = Option.Proxy();
 
-  @Command.Boolean('-v,--verbose')
-  verbose = false;
+  verbose = Option.Boolean('-v,--verbose', false);
 
-  @Command.Boolean('-p,--parallel')
-  parallel = false;
+  parallel = Option.Boolean('-p,--parallel', false);
 
-  @Command.Boolean('-i,--interlaced')
-  interlaced = false;
+  interlaced = Option.Boolean('-i,--interlaced', false);
 
-  @Command.Boolean('-t,--topological')
-  topological = false;
+  topological = Option.Boolean('-t,--topological', false);
 
-  @Command.String('-j,--jobs')
-  jobs?: number;
+  all = Option.Boolean('-A,--all', false);
+
+  recursive = Option.Boolean('-R,--recursive', false);
+
+  worktree = Option.Boolean('-W,--worktree', false);
+
+  jobs?: number = Option.String('-j,--jobs');
 
   public static usage = Command.Usage({
     description: 'Run a command on changed workspaces and their dependents',
@@ -49,7 +48,8 @@ export default class ChangedForeachCommand extends FilterCommand {
     ],
   });
 
-  @Command.Path('changed', 'foreach')
+  static paths = [['changed', 'foreach']];
+
   public async execute(): Promise<number> {
     const configuration = await Configuration.find(
       this.context.cwd,
@@ -88,7 +88,7 @@ export default class ChangedForeachCommand extends FilterCommand {
           (acc, ws) => [
             ...acc,
             '--include',
-            structUtils.stringifyIdent(ws.locator),
+            structUtils.stringifyIdent(ws.anchoredLocator),
           ],
           [] as string[],
         ),
@@ -96,6 +96,9 @@ export default class ChangedForeachCommand extends FilterCommand {
         ...(this.parallel ? ['--parallel'] : []),
         ...(this.interlaced ? ['--interlaced'] : []),
         ...(this.topological ? ['--topological'] : []),
+        ...(this.all ? ['--all'] : []),
+        ...(this.recursive ? ['--recursive'] : []),
+        ...(this.worktree ? ['--worktree'] : []),
         ...(this.jobs ? ['--jobs', `${this.jobs}`] : []),
         this.commandName,
         ...this.args,

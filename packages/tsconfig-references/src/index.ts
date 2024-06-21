@@ -1,10 +1,10 @@
 import { Plugin, Workspace, Descriptor } from '@yarnpkg/core';
 import { Hooks, suggestUtils } from '@yarnpkg/plugin-essentials';
-import { ppath, toFilename, xfs, PortablePath } from '@yarnpkg/fslib';
+import { ppath, xfs, PortablePath } from '@yarnpkg/fslib';
 import detectIndent from 'detect-indent';
 
 function getTsConfigPath(workspace: Workspace): PortablePath {
-  return ppath.join(workspace.cwd, toFilename('tsconfig.json'));
+  return ppath.join(workspace.cwd, 'tsconfig.json');
 }
 
 interface TsReference {
@@ -68,9 +68,8 @@ async function afterWorkspaceDependencyAddition(
   target: suggestUtils.Target,
   descriptor: Descriptor,
 ): Promise<void> {
-  const targetWorkspace = workspace.project.tryWorkspaceByDescriptor(
-    descriptor,
-  );
+  const targetWorkspace =
+    workspace.project.tryWorkspaceByDescriptor(descriptor);
 
   if (!targetWorkspace || !(await isTsWorkspace(targetWorkspace))) {
     return;
@@ -93,9 +92,8 @@ async function afterWorkspaceDependencyRemoval(
   target: suggestUtils.Target,
   descriptor: Descriptor,
 ): Promise<void> {
-  const targetWorkspace = workspace.project.tryWorkspaceByDescriptor(
-    descriptor,
-  );
+  const targetWorkspace =
+    workspace.project.tryWorkspaceByDescriptor(descriptor);
 
   if (!targetWorkspace || !(await isTsWorkspace(targetWorkspace))) {
     return;

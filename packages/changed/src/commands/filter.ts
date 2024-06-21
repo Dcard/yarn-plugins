@@ -1,20 +1,16 @@
 import { BaseCommand } from '@yarnpkg/cli';
-import { Command } from 'clipanion';
+import { Option } from 'clipanion';
 import { execUtils, Project, Workspace, structUtils } from '@yarnpkg/core';
 import listChangedWorkspaces from '../utils/listChangedWorkspaces';
 
 export abstract class FilterCommand extends BaseCommand {
-  @Command.String('--git-range')
-  public gitRange?: string;
+  public gitRange?: string = Option.String('--git-range');
 
-  @Command.Boolean('--cached')
-  public cached = false;
+  public cached = Option.Boolean('--cached', false);
 
-  @Command.Array('--include')
-  public include?: string[];
+  public include?: string[] = Option.Array('--include');
 
-  @Command.Array('--exclude')
-  public exclude?: string[];
+  public exclude?: string[] = Option.Array('--exclude');
 
   protected async listWorkspaces(
     project: Project,
@@ -38,7 +34,7 @@ export abstract class FilterCommand extends BaseCommand {
     const exclude = this.exclude || [];
 
     return workspaces.filter((ws) => {
-      const name = structUtils.stringifyIdent(ws.locator);
+      const name = structUtils.stringifyIdent(ws.anchoredLocator);
 
       if (name) {
         if (include.length && !include.includes(name)) {

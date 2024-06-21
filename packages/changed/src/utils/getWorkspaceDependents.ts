@@ -8,7 +8,10 @@ export default function getWorkspaceDependents(
 
   for (const ws of workspace.project.workspaces) {
     const isDep = getWorkspaceDependencies(ws).some((dep) =>
-      structUtils.areLocatorsEqual(dep.locator, workspace.locator),
+      structUtils.areLocatorsEqual(
+        dep.anchoredLocator,
+        workspace.anchoredLocator,
+      ),
     );
 
     if (isDep) {

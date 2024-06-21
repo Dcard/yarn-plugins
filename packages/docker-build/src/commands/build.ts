@@ -1,5 +1,5 @@
 import { BaseCommand } from '@yarnpkg/cli';
-import { Command } from 'clipanion';
+import { Command, Option } from 'clipanion';
 import {
   Configuration,
   Project,
@@ -12,7 +12,7 @@ import { patchUtils } from '@yarnpkg/plugin-patch';
 import getDockerFilePath from '../utils/getDockerFilePath';
 import getRequiredWorkspaces from '../utils/getRequiredWorkspaces';
 import copyRcFile from '../utils/copyRcFile';
-import { toFilename, ppath, xfs } from '@yarnpkg/fslib';
+import { ppath, xfs } from '@yarnpkg/fslib';
 import copyPlugins from '../utils/copyPlugins';
 import copyYarnRelease from '../utils/copyYarnRelease';
 import copyManifests from '../utils/copyManifests';
@@ -24,23 +24,17 @@ import copyProtocolFiles from '../utils/copyProtocolFiles';
 import { parseSpec } from '../utils/execUtils';
 
 export default class DockerBuildCommand extends BaseCommand {
-  @Command.String()
-  public workspaceName!: string;
+  public workspaceName: string = Option.String();
 
-  @Command.Proxy()
-  public args: string[] = [];
+  public args: string[] = Option.Proxy();
 
-  @Command.String('-f,--file')
-  public dockerFilePath?: string;
+  public dockerFilePath?: string = Option.String('-f,--file');
 
-  @Command.Array('--copy')
-  public copyFiles?: string[];
+  public copyFiles?: string[] = Option.Array('--copy');
 
-  @Command.Boolean('--production')
-  public production?: boolean;
+  public production?: boolean = Option.Boolean('--production');
 
-  @Command.Boolean('--buildkit')
-  public buildKit?: boolean;
+  public buildKit?: boolean = Option.Boolean('--buildkit');
 
   public static usage = Command.Usage({
     category: 'Docker-related commands',
@@ -75,7 +69,8 @@ export default class DockerBuildCommand extends BaseCommand {
     ],
   });
 
-  @Command.Path('docker', 'build')
+  static paths = [['docker', 'build']];
+
   public async execute(): Promise<number> {
     const configuration = await Configuration.find(
       this.context.cwd,
@@ -116,8 +111,8 @@ export default class DockerBuildCommand extends BaseCommand {
         });
 
         await xfs.mktempPromise(async (cwd) => {
-          const manifestDir = ppath.join(cwd, toFilename('manifests'));
-          const packDir = ppath.join(cwd, toFilename('packs'));
+          const manifestDir = ppath.join(cwd, 'manifests');
+          const packDir = ppath.join(cwd, 'packs');
 
           await report.startTimerPromise('Copy files', async () => {
             await copyRcFile({
@@ -157,10 +152,8 @@ export default class DockerBuildCommand extends BaseCommand {
                     paths: [parsed.path],
                   };
                 } else if (descriptor.range.startsWith('patch:')) {
-                  const {
-                    parentLocator,
-                    patchPaths: paths,
-                  } = patchUtils.parseDescriptor(descriptor);
+                  const { parentLocator, patchPaths: paths } =
+                    patchUtils.parseDescriptor(descriptor);
                   if (!parentLocator) return;
                   return { parentLocator, paths };
                 }

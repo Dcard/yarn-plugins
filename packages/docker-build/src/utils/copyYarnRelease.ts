@@ -1,4 +1,4 @@
-import { PortablePath, xfs, ppath } from '@yarnpkg/fslib';
+import { PortablePath, xfs, ppath, Filename } from '@yarnpkg/fslib';
 import { Project, Report } from '@yarnpkg/core';
 
 export default async function copyYarnRelease({
@@ -10,7 +10,7 @@ export default async function copyYarnRelease({
   project: Project;
   report: Report;
 }): Promise<void> {
-  const src = project.configuration.get('yarnPath');
+  const src = project.configuration.get('yarnPath') as Filename;
   const path = ppath.relative(project.cwd, src);
   const dest = ppath.join(destination, path);
 

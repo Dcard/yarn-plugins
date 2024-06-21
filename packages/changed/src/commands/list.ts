@@ -1,5 +1,5 @@
 import { FilterCommand } from './filter';
-import { Command } from 'clipanion';
+import { Command, Option } from 'clipanion';
 import {
   Configuration,
   Project,
@@ -9,8 +9,7 @@ import {
 import { WorkspaceRequiredError } from '@yarnpkg/cli';
 
 export default class ChangedListCommand extends FilterCommand {
-  @Command.Boolean('--json')
-  public json = false;
+  public json = Option.Boolean('--json', false);
 
   public static usage = Command.Usage({
     description: 'List changed workspaces and their dependents',
@@ -29,7 +28,8 @@ export default class ChangedListCommand extends FilterCommand {
     ],
   });
 
-  @Command.Path('changed', 'list')
+  static paths = [['changed', 'list']];
+
   public async execute(): Promise<number> {
     const configuration = await Configuration.find(
       this.context.cwd,
